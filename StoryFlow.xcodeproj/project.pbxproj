@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D323F60C20B530B200C3E8E5 /* ImplicitFlow+OneOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = D323F60B20B530B200C3E8E5 /* ImplicitFlow+OneOf.swift */; };
+		D353D047211C8C6D00EA5F07 /* StoryFlow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3E094EA20AC3284007E5715 /* StoryFlow.framework */; };
 		D358B3AD20B49007009A9C90 /* ImplicitFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D358B3AC20B49007009A9C90 /* ImplicitFlow.swift */; };
 		D374ECDC20B4BD3E00481F05 /* OneOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = D374ECDB20B4BD3E00481F05 /* OneOf.swift */; };
 		D374ECDF20B4C0CE00481F05 /* ExplicitFlow+OneOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = D374ECDE20B4C0CE00481F05 /* ExplicitFlow+OneOf.swift */; };
@@ -77,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D353D047211C8C6D00EA5F07 /* StoryFlow.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
