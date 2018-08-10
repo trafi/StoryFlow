@@ -41,17 +41,26 @@ func _findVcTypes() -> [AnyClass] {
     let actualClassCount = objc_getClassList(autoreleasingAllClasses, expectedClassCount)
 
     var classes = [AnyClass]()
-    for i in 0 ..< actualClassCount {
-        let c: AnyClass = allClasses[Int(i)]
-        guard
-            class_getSuperclass(c) is UIViewController.Type,
-            c is _AnyOutputProducing.Type ||
-            c is _AnyInputRequiring.Type ||
-            c is _AnyUpdateHandling.Type
-        else { continue }
 
-        classes.append(c)
+    let thread = DispatchGroup()
+    thread.enter()
+
+    DispatchQueue.main.async {
+        for i in 0 ..< actualClassCount {
+            let c: AnyClass = allClasses[Int(i)]
+            guard
+                class_getSuperclass(c) is UIViewController.Type,
+                c is _AnyOutputProducing.Type ||
+                c is _AnyInputRequiring.Type ||
+                c is _AnyUpdateHandling.Type
+            else { continue }
+
+            classes.append(c)
+        }
+        thread.leave()
     }
+    thread.wait()
+
     allClasses.deallocate()
 
     return classes
