@@ -7,15 +7,20 @@ public protocol InputRequiring: _AnyInputRequiring {
 
 extension InputRequiring where Self: UIViewController {
 
+    /**
+     Returns the produced `output` of a previous view controller.
+
+     - precondition: View controller instance must be created using `produce(output:)` or `init(nibName:bundle:input)`. Otherwise, accessing this member causes a crash.
+     */
     public internal(set) var input: InputType {
         get {
             let associatedInput: InputType? = associated(with: &associatedKey)
             guard let input = associatedInput
-                else { fatalError("Accessing `input` of `\(type(of: self))` before it was set.") }
+                else { fatalError("Accessing unavailable `input` of `\(type(of: self))`. Make sure this view controller was created using `produce(output:)` or `init(nibName:bundle:input)`") }
             return input
         }
         nonmutating set {
-            associate(newValue, with: &associatedKey)
+            associate(newValue, with: &inputKey)
         }
     }
 }

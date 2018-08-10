@@ -7,6 +7,17 @@ public protocol OutputProducing: _AnyOutputProducing {
 
 extension OutputProducing where Self: UIViewController {
 
+    /**
+     Transitions to view controller in the `flow` by matching the type of provided `output`.
+
+     Possible transitions:
+     - Unwind back to `UpdateHandling` view controller in the hierarchy.
+     - Create and show new `InputRequiring` view controller.
+
+     See [tests examples](https://github.com/trafi/StoryFlow/blob/master/StoryFlowTests/ImplicitFlowTests.swift).
+
+     - Parameter output: The value being passed to next view controller.
+     */
     public func produce(_ output: OutputType) {
 
         if let produce = produceStub {
@@ -18,6 +29,11 @@ extension OutputProducing where Self: UIViewController {
         }
     }
 
+    /**
+     Explicit transition graph from view controller.
+
+     See [test examples](https://github.com/trafi/StoryFlow/blob/master/StoryFlowTests/ExplicitFlowTests.swift).
+     */
     public var flow: Flow<OutputType>? {
         get {
             return associated(with: &flowKey)

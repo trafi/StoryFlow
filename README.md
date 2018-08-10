@@ -18,7 +18,7 @@ protocol InputRequiring {
     associatedtype InputType
 }
 extension InputRequiring {
-    var input: InputType { return ✨ }
+    var input: InputType { return ✨ } // Returns 'output' of previous vc
 }
 ```
 ```swift
@@ -26,13 +26,13 @@ protocol OuputProducing {
     associatedtype OutputType
 }
 extension OuputProducing {
-    func produce(_ output: OutputType) { ✨ }
+    func produce(_ output: OutputType) { ✨ } // Opens vc with matching `UpdateType` or `InputType`
 }
 ```
 ```swift
 protocol UpdateHandling {
     associatedtype UpdateType
-    func handle(update: UpdateType)
+    func handle(update: UpdateType) // Gets called with 'output' of dismissed vc
 }
 ```
 ```swift
