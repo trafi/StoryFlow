@@ -18,10 +18,7 @@ extension OutputProducing where Self: UIViewController {
 
             // MARK: Input
 
-            for vcType in vcTypes {
-                guard let inType = vcType as? _AnyInputRequiring.Type, inType._inputType == type
-                    else { continue }
-
+            for inType in inputRequiringTypes where inType._inputType == type {
                 let to = inType._create(input: value)
                 from.show(to, sender: nil) // TODO: Custom transition
                 return
@@ -32,36 +29,28 @@ extension OutputProducing where Self: UIViewController {
     }
 }
 
-private var vcTypes: [AnyClass] = _findVcTypes()
+private var inputRequiringTypes: [_AnyInputRequiring.Type] = {
 
-func _findVcTypes() -> [AnyClass] {
     let expectedClassCount = objc_getClassList(nil, 0)
     let allClasses = UnsafeMutablePointer<AnyClass>.allocate(capacity: Int(expectedClassCount))
     let autoreleasingAllClasses = AutoreleasingUnsafeMutablePointer<AnyClass>(allClasses)
     let actualClassCount = objc_getClassList(autoreleasingAllClasses, expectedClassCount)
 
-    var classes = [AnyClass]()
+    var classes = [_AnyInputRequiring.Type]()
 
-    let thread = DispatchGroup()
-    thread.enter()
-
-    DispatchQueue.main.async {
+    Thread.onMain {
         for i in 0 ..< actualClassCount {
             let c: AnyClass = allClasses[Int(i)]
             guard
                 class_getSuperclass(c) is UIViewController.Type,
-                c is _AnyOutputProducing.Type ||
-                c is _AnyInputRequiring.Type ||
-                c is _AnyUpdateHandling.Type
-            else { continue }
+                let t = c as? _AnyInputRequiring.Type
+                else { continue }
 
-            classes.append(c)
+            classes.append(t)
         }
-        thread.leave()
     }
-    thread.wait()
 
     allClasses.deallocate()
 
     return classes
-}
+}()
