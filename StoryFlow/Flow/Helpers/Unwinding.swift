@@ -30,7 +30,7 @@ private extension UIViewController {
             guard let top = nav.topViewController else { return [self] }
             return [self] + top.visibleVcs
         } else {
-            return [self] + childViewControllers.flatMap { $0.visibleVcs }
+            return [self] + children.flatMap { $0.visibleVcs }
         }
     }
 

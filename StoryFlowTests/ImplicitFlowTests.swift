@@ -118,9 +118,9 @@ class ImplicitFlowTests: XCTestCase {
 
         let container = UIViewController().visible()
         let to = To()
-        container.addChildViewController(to)
+        container.addChild(to)
         container.view.addSubview(to.view)
-        to.didMove(toParentViewController: container)
+        to.didMove(toParent: container)
 
         let from = From()
         container.show(from, sender: nil)

@@ -316,13 +316,16 @@
 				TargetAttributes = {
 					D381D0D020D4805100B6C416 = {
 						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 1000;
 					};
 					D381D0E320D4805200B6C416 = {
 						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 1000;
 						TestTargetID = D381D0D020D4805100B6C416;
 					};
 					D3E094E920AC3284007E5715 = {
 						CreatedOnToolsVersion = 9.3.1;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -436,7 +439,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Trafi.StoryFlowTestsContainer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -453,7 +456,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Trafi.StoryFlowTestsContainer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -473,7 +476,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Trafi.StoryFlowTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StoryFlowTestsContainer.app/StoryFlowTestsContainer";
 			};
@@ -494,7 +497,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Trafi.StoryFlowTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StoryFlowTestsContainer.app/StoryFlowTestsContainer";
 			};
@@ -639,7 +642,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Trafi.StoryFlow;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -663,7 +666,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Trafi.StoryFlow;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
