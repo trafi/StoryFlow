@@ -64,6 +64,11 @@ extension XCTWaiter {
     }
 }
 
+// MARK: - Protocol
+
+protocol LinkType: Equatable {}
+struct Link: LinkType {}
+
 // MARK: - FatalError
 
 @testable import StoryFlow

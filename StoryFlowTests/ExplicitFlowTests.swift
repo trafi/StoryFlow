@@ -25,6 +25,26 @@ class ExplicitFlowTests: XCTestCase {
         XCTAssert((currentVc as! To).input == output)
     }
 
+    func testProduce_itShowsNextVcAndPassesProtocolOutput() {
+
+        // Arrange
+        class From: UIViewController, OutputProducing { typealias OutputType = LinkType }
+        class To: UIViewController, InputRequiring { typealias InputType = LinkType }
+
+        let from = From().visible()
+        from.flow = .show(To.self)
+
+        let output = Link()
+
+        // Act
+        from.produce(output)
+        XCTAssert(currentVc.didAppear())
+
+        // Assert
+        XCTAssert(currentVc is To)
+        XCTAssert((currentVc as! To).input as! Link == output)
+    }
+
     func testProduce_itShowsNextVcByOneOfOutputType() {
 
         // Arrange
