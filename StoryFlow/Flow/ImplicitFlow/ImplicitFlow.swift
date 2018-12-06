@@ -1,12 +1,16 @@
 import Foundation
 import UIKit
 
-extension OutputProducing where Self: UIViewController {
+extension Flow {
 
-    var implicitFlow: Flow<OutputType> {
+    public static func implicit() -> Flow {
         return Flow { from, value in
 
-            let (value, type) = unwrapped(value, OutputType.self)
+            guard let outputProducing = from as? _AnyOutputProducing
+                else { fatalError("Can't use `Flow.implict()` on vc that is not `OutputProducing` for produced `output` \(value) from `\(Swift.type(of: from))`.") }
+
+            let outputType = Swift.type(of: outputProducing)._outputType
+            let (value, type) = unwrapped(value, outputType)
 
             // MARK: Update
 
@@ -26,6 +30,13 @@ extension OutputProducing where Self: UIViewController {
 
             fatalError("Didn't find `UpdateHandling` vc in the navigation sack and `InputRequiring` vc in the project for produced `output` \(value) from `\(Swift.type(of: from))`.")
         }
+    }
+}
+
+extension OutputProducing where Self: UIViewController {
+
+    var implicitFlow: Flow<OutputType> {
+        return .implicit()
     }
 }
 
