@@ -69,6 +69,14 @@ extension XCTWaiter {
 protocol LinkType: Equatable {}
 struct Link: LinkType {}
 
+// MARK: - CustomTransition
+
+extension CustomTransition {
+    static func reset() {
+        attempts = []
+    }
+}
+
 // MARK: - FatalError
 
 @testable import StoryFlow

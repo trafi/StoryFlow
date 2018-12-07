@@ -217,4 +217,116 @@ class ImplicitFlowTests: XCTestCase {
         // Assert
         XCTAssert(currentVc == to)
     }
+
+    // MARK: Custom transition
+
+    func testProduce_itUsesCustomTransitionAttempt() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From().visible()
+
+        var customTransitionUsed = false
+
+        CustomTransition.register(transitionAttempt: { _, _ in
+            customTransitionUsed = true
+            return true
+        })
+
+        // Act
+        from.produce(T())
+
+        // Assert
+        XCTAssert(customTransitionUsed)
+
+        // Clean up
+        CustomTransition.reset()
+    }
+
+    func testProduce_itUsesCustomTransition() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From().visible()
+
+        var customTransitionUsed = false
+
+        CustomTransition.register(transition: Transition.custom(To.self) { _, _ in
+            customTransitionUsed = true
+        })
+
+        // Act
+        from.produce(T())
+
+        // Assert
+        XCTAssert(customTransitionUsed)
+
+        // Clean up
+        CustomTransition.reset()
+    }
+
+    func testProduce_itUsesCustomTransitionWithDefinedFrom() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From().visible()
+
+        var customTransitionUsed = false
+
+        CustomTransition.register(fromType: From.self, transition: Transition.custom(To.self) { _, _ in
+            customTransitionUsed = true
+        })
+
+        // Act
+        from.produce(T())
+
+        // Assert
+        XCTAssert(customTransitionUsed)
+
+        // Clean up
+        CustomTransition.reset()
+    }
+
+    func testProduce_itUsesCustomTransitionForUnwind() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling { func handle(update: T) { } }
+
+        let to = To().visible()
+        let from = From()
+
+        to.show(from, sender: nil)
+        XCTAssert(currentVc.didAppear())
+
+        var customTransitionUsed = false
+
+        CustomTransition.register(transitionAttempt: { _, _ in
+            customTransitionUsed = true
+            return true
+        })
+
+        // Act
+        from.produce(T())
+
+        // Assert
+        XCTAssert(customTransitionUsed)
+
+        // Clean up
+        CustomTransition.reset()
+    }
 }
