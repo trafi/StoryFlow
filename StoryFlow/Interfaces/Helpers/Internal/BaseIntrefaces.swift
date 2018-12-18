@@ -16,9 +16,13 @@ extension InputRequiring where Self: UIViewController  {
     }
 
     public static func _create(input: Any) -> UIViewController {
-        guard let typedInput = input as? InputType
-            else { fatalError("Trying to create `\(self)` with uncompatible `input` value: \(input).") }
-        return self.init(input: typedInput)
+        if let typedInput = input as? InputType {
+            return self.init(input: typedInput)
+        } else if let typedInput = (InputType.self as? OneOfNType.Type)?.create(from: input) as? InputType {
+            return self.init(input: typedInput)
+        } else {
+            fatalError("Trying to create `\(self)` with uncompatible `input` value: \(input).")
+        }
     }
 }
 

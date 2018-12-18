@@ -24,7 +24,7 @@ extension Flow {
 
             // MARK: Input
 
-            for inType in inputRequiringTypes where inType._inputType == type {
+            for inType in inputRequiringTypes where oneOf(inType._inputType, contains: type) {
                 let to = inType._create(input: value)
                 if CustomTransition.attempt(from: from, to: to) == false {
                     from.show(to, sender: nil)

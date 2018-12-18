@@ -5,6 +5,11 @@ func unwrapped(_ value: Any, _ type: Any.Type) -> (value: Any, type: Any.Type) {
     return oneOf.valueAndType
 }
 
+func oneOf(_ types: Any.Type, contains type: Any.Type) -> Bool {
+    guard let oneOfType = types as? OneOfNType.Type else { return types == type }
+    return oneOfType.valueTypes.contains { $0 == type }
+}
+
 // MARK: - Protocol
 
 protocol OneOfNType {

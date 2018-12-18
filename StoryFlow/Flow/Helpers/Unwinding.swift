@@ -54,8 +54,3 @@ private extension UIViewController {
         return vc
     }
 }
-
-private func oneOf(_ vcUpdateType: Any.Type, contains updateType: Any.Type) -> Bool {
-    guard let oneOfType = vcUpdateType as? OneOfNType.Type else { return false }
-    return oneOfType.valueTypes.contains { $0 == updateType }
-}
