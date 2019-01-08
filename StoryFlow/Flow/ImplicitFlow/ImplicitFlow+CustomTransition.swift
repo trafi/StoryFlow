@@ -25,6 +25,18 @@ public enum CustomTransition {
         }
     }
 
+    public static func register<InputType>(for inputType: InputType.Type, transition: Transition<UIViewController>) {
+        register { from, to in
+            guard
+                let anyTo = to as? _AnyInputRequiring,
+                oneOf(type(of: anyTo)._inputType, contains: inputType)
+            else { return false }
+
+            transition.go(from, to)
+            return true
+        }
+    }
+
     // MARK: Attempting
 
     static var attempts = [(UIViewController, UIViewController) -> Bool]()

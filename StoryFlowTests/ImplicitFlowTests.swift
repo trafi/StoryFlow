@@ -318,6 +318,32 @@ class ImplicitFlowTests: XCTestCase {
         CustomTransition.reset()
     }
 
+    func testProduce_itUsesCustomTransitionForInputType() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From().visible()
+
+        var customTransitionUsed = false
+
+        CustomTransition.register(for: T.self, transition: Transition.custom(UIViewController.self) { _, _ in
+            customTransitionUsed = true
+        })
+
+        // Act
+        from.produce(T())
+
+        // Assert
+        XCTAssert(customTransitionUsed)
+
+        // Clean up
+        CustomTransition.reset()
+    }
+
     func testProduce_itUsesCustomTransitionForUnwind() {
 
         // Arrange
