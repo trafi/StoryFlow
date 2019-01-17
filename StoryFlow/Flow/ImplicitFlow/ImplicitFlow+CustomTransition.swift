@@ -5,7 +5,7 @@ public enum CustomTransition {
 
     // MARK: Register transitions
 
-    public static func register(transitionAttempt: @escaping ((UIViewController, UIViewController) -> Bool)) {
+    public static func register(transitionAttempt: @escaping ((UIViewController, Any.Type, UIViewController) -> Bool)) {
         attempts.append(transitionAttempt)
     }
 
@@ -14,7 +14,7 @@ public enum CustomTransition {
     }
 
     public static func register<From: UIViewController, To: UIViewController>(fromType: From.Type, transition: Transition<To>) {
-        register { from, to in
+        register { from, _, to in
             guard
                 from is From,
                 let to = to as? To
@@ -26,11 +26,8 @@ public enum CustomTransition {
     }
 
     public static func register<InputType>(for inputType: InputType.Type, transition: Transition<UIViewController>) {
-        register { from, to in
-            guard
-                let anyTo = to as? _AnyInputRequiring,
-                oneOf(type(of: anyTo)._inputType, contains: inputType)
-            else { return false }
+        register { from, outputType, to in
+            guard outputType == inputType else { return false }
 
             transition.go(from, to)
             return true
@@ -39,9 +36,9 @@ public enum CustomTransition {
 
     // MARK: Attempting
 
-    static var attempts = [(UIViewController, UIViewController) -> Bool]()
+    static var attempts = [(UIViewController, Any.Type, UIViewController) -> Bool]()
 
-    static func attempt(from: UIViewController, to: UIViewController) -> Bool {
-        return attempts.contains { $0(from, to) == true }
+    static func attempt(from: UIViewController, outputType: Any.Type, to: UIViewController) -> Bool {
+        return attempts.contains { $0(from, outputType, to) == true }
     }
 }

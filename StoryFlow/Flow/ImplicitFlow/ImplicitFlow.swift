@@ -16,7 +16,7 @@ extension Flow {
 
             if let to = from.unwindVc(for: type) {
                 to.handleUpdate(value, type)
-                if CustomTransition.attempt(from: from, to: to) == false {
+                if CustomTransition.attempt(from: from, outputType: type, to: to) == false {
                     Transition.unwind().go(from, to)
                 }
                 return
@@ -26,7 +26,7 @@ extension Flow {
 
             for inType in inputRequiringTypes where oneOf(inType._inputType, contains: type) {
                 let to = inType._create(input: value)
-                if CustomTransition.attempt(from: from, to: to) == false {
+                if CustomTransition.attempt(from: from, outputType: type, to: to) == false {
                     from.show(to, sender: nil)
                 }
                 return

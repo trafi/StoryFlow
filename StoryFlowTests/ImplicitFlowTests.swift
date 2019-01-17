@@ -251,7 +251,7 @@ class ImplicitFlowTests: XCTestCase {
 
         var customTransitionUsed = false
 
-        CustomTransition.register(transitionAttempt: { _, _ in
+        CustomTransition.register(transitionAttempt: { _, _, _ in
             customTransitionUsed = true
             return true
         })
@@ -360,7 +360,7 @@ class ImplicitFlowTests: XCTestCase {
 
         var customTransitionUsed = false
 
-        CustomTransition.register(transitionAttempt: { _, _ in
+        CustomTransition.register(transitionAttempt: { _, _, _ in
             customTransitionUsed = true
             return true
         })
