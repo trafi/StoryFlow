@@ -10,7 +10,7 @@ extension UIViewController {
         } else if let vc = navBackStack?.first(where: { $0.canHandle(updateType) }) {
             return vc
         } else {
-            return presentingViewController?.unwindVc(for: updateType)
+            return presentingViewController?.unwindVc(for: updateType) ?? parent?.unwindVc(for: updateType)
         }
     }
 

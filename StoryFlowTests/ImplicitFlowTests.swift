@@ -205,6 +205,32 @@ class ImplicitFlowTests: XCTestCase {
         XCTAssert(currentVc == to)
     }
 
+    func testProduce_itUnwindsToParentAndPassessOutput() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling {
+            func handle(update: T) { self.update = update }
+            var update: T!
+        }
+
+        let to = To().visible()
+        let from = From()
+
+        to.addChild(from)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(currentVc == to)
+        XCTAssert(to.update === output)
+    }
+
     func testProduce_itUnwindsInComplexFlow() {
 
         // Arrange
