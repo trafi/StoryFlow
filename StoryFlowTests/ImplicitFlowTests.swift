@@ -231,6 +231,37 @@ class ImplicitFlowTests: XCTestCase {
         XCTAssert(to.update === output)
     }
 
+    func testProduce_whenSelfCanHandleUpdate_itUnwindsToPreviousVc() {
+
+        // Arrange
+        class T {}
+
+        class Vc: UIViewController, OutputProducing, UpdateHandling {
+            typealias OutputType = T
+            func handle(update: T) { self.update = update }
+            var update: T?
+        }
+
+        let to = Vc()
+        let from = Vc()
+
+        let nav = UINavigationController()
+        nav.setViewControllers([to, from], animated: false)
+        nav.visible()
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+        XCTAssert(currentVc.didDismiss())
+
+        // Assert
+        XCTAssert(currentVc == to)
+        XCTAssert(to.update === output)
+        XCTAssertNil(from.update)
+        
+    }
+
     func testProduce_itUnwindsInComplexFlow() {
 
         // Arrange

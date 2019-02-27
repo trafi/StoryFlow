@@ -3,14 +3,15 @@ import UIKit
 
 extension UIViewController {
 
-    func unwindVc(for updateType: Any.Type) -> UIViewController? {
+    func unwindVc(for updateType: Any.Type, filterOutSelf: Bool = true) -> UIViewController? {
 
-        if canHandle(updateType) {
+        if canHandle(updateType, filterOutSelf: filterOutSelf) {
             return self
         } else if let vc = navBackStack?.first(where: { $0.canHandle(updateType) }) {
             return vc
         } else {
-            return presentingViewController?.unwindVc(for: updateType) ?? parent?.unwindVc(for: updateType)
+            return presentingViewController?.unwindVc(for: updateType, filterOutSelf: false)
+                ?? parent?.unwindVc(for: updateType, filterOutSelf: false)
         }
     }
 
@@ -21,8 +22,8 @@ extension UIViewController {
 
 private extension UIViewController {
 
-    func canHandle(_ updateType: Any.Type) -> Bool {
-        return visibleVcs.contains { $0.isVc(for: updateType) }
+    func canHandle(_ updateType: Any.Type, filterOutSelf: Bool = false) -> Bool {
+        return visibleVcs.contains { $0.isVc(for: updateType) && (filterOutSelf == false || $0 !== self) }
     }
 
     var visibleVcs: [UIViewController] {
