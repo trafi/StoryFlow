@@ -32,7 +32,7 @@ class FailureTests: XCTestCase {
         XCTAssertFatalError(vc._handleAny(update: ""))
     }
 
-    func testOuputProducing_itFailsToProduceOutput_whenNoUpdateHandlingForTypeIsFound() {
+    func testOutputProducing_itFailsToProduceOutput_whenNoUpdateHandlingForTypeIsFound() {
 
         // Arrange
         class From: UIViewController, OutputProducing { typealias OutputType = Int }
@@ -44,7 +44,7 @@ class FailureTests: XCTestCase {
         XCTAssertFatalError(from.produce(0))
     }
 
-    func testOuputProducing_itFailsToProduceOutput_whenNoInputRequiringForTypeIsFound() {
+    func testOutputProducing_itFailsToProduceOutput_whenNoInputRequiringForTypeIsFound() {
 
         // Arrange
         class T {}
