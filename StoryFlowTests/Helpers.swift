@@ -77,6 +77,14 @@ extension CustomTransition {
     }
 }
 
+// MARK: - OutputTransform
+
+extension OutputTransform {
+    static func reset() {
+        transforms = []
+    }
+}
+
 // MARK: - FatalError
 
 @testable import StoryFlow

@@ -431,4 +431,109 @@ class ImplicitFlowTests: XCTestCase {
         // Clean up
         CustomTransition.reset()
     }
+
+    // MARK: Output transforms
+
+    func testProduce_itShowsNextVcByTransformedOutput() {
+
+        // Arrange
+        class T1 {}
+        class T2 {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T1 }
+        class To: UIViewController, InputRequiring { typealias InputType = T2 }
+
+        let from = From().visible()
+        let transformedOutput = T2()
+
+        OutputTransform.register { (_: T1) in transformedOutput }
+
+        // Act
+        from.produce(T1())
+
+        // Assert
+        XCTAssert(currentVc is To)
+        XCTAssert((currentVc as! To).input === transformedOutput)
+
+        // Clean up
+        OutputTransform.reset()
+    }
+
+    func testProduce_itShowsNextVcByApplyingSingleTransformedOutput() {
+
+        // Arrange
+        class T1 {}
+        class T2 {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T1 }
+        class To: UIViewController, InputRequiring { typealias InputType = T2 }
+
+        let from = From().visible()
+        let transformedOutput = T2()
+
+        OutputTransform.register { (_: T1) in transformedOutput }
+        OutputTransform.register { (_: T2) in "" }
+
+        // Act
+        from.produce(T1())
+
+        // Assert
+        XCTAssert(currentVc is To)
+        XCTAssert((currentVc as! To).input === transformedOutput)
+
+        // Clean up
+        OutputTransform.reset()
+    }
+
+    func testProduce_itShowsNextVcByTransformedOneOfOutput() {
+
+        // Arrange
+        class T1 {}
+        class T2 {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T1 }
+        class To: UIViewController, InputRequiring { typealias InputType = T2 }
+
+        let from = From().visible()
+        let transformedOutput = T2()
+        let oneOfTransformedOutput: OneOf2<T1, T2> = .t2(transformedOutput)
+
+        OutputTransform.register { (_: T1) in oneOfTransformedOutput }
+
+        // Act
+        from.produce(T1())
+
+        // Assert
+        XCTAssert(currentVc is To)
+        XCTAssert((currentVc as! To).input === transformedOutput)
+
+        // Clean up
+        OutputTransform.reset()
+    }
+
+    func testProduce_itShowsNextVcByOneOfTransformedOneOfOutput() {
+
+        // Arrange
+        class T1 {}
+        class T2 {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = OneOf2<T2, T1> }
+        class To: UIViewController, InputRequiring { typealias InputType = T2 }
+
+        let from = From().visible()
+        let transformedOutput = T2()
+        let oneOfTransformedOutput: OneOf2<T1, T2> = .t2(transformedOutput)
+
+        OutputTransform.register { (_: T1) in oneOfTransformedOutput }
+
+        // Act
+        from.produce(T1())
+
+        // Assert
+        XCTAssert(currentVc is To)
+        XCTAssert((currentVc as! To).input === transformedOutput)
+
+        // Clean up
+        OutputTransform.reset()
+    }
 }

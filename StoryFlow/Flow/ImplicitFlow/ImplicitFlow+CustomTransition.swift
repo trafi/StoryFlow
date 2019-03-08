@@ -1,11 +1,13 @@
 import Foundation
 import UIKit
 
+public typealias TransitionAttempt = (UIViewController, Any.Type, UIViewController) -> Bool
+
 public enum CustomTransition {
 
-    // MARK: Register transitions
+    // MARK: Registering
 
-    public static func register(transitionAttempt: @escaping ((UIViewController, Any.Type, UIViewController) -> Bool)) {
+    public static func register(transitionAttempt: @escaping TransitionAttempt) {
         attempts.append(transitionAttempt)
     }
 
@@ -36,7 +38,7 @@ public enum CustomTransition {
 
     // MARK: Attempting
 
-    static var attempts = [(UIViewController, Any.Type, UIViewController) -> Bool]()
+    static var attempts = [TransitionAttempt]()
 
     static func attempt(from: UIViewController, outputType: Any.Type, to: UIViewController) -> Bool {
         return attempts.contains { $0(from, outputType, to) == true }

@@ -1,10 +1,5 @@
 import Foundation
 
-func unwrapped(_ value: Any, _ type: Any.Type) -> (value: Any, type: Any.Type) {
-    guard let oneOf = value as? OneOfNType else { return (value, type) }
-    return oneOf.valueAndType
-}
-
 func oneOf(_ types: Any.Type, contains type: Any.Type) -> Bool {
     guard let oneOfType = types as? OneOfNType.Type else { return types == type }
     return oneOfType.valueTypes.contains { $0 == type }
@@ -13,7 +8,7 @@ func oneOf(_ types: Any.Type, contains type: Any.Type) -> Bool {
 // MARK: - Protocol
 
 protocol OneOfNType {
-    var valueAndType: (Any, Any.Type) { get }
+    var valueAndType: ValueAndType { get }
     static var valueTypes: [Any.Type] { get }
     static func create(from value: Any) -> Any?
 }
@@ -21,7 +16,7 @@ protocol OneOfNType {
 // MARK: - Conformance
 
 extension OneOf2: OneOfNType {
-    var valueAndType: (Any, Any.Type) {
+    var valueAndType: ValueAndType {
         switch self {
         case .t1(let v): return (v, T1.self)
         case .t2(let v): return (v, T2.self)
@@ -40,7 +35,7 @@ extension OneOf2: OneOfNType {
 }
 
 extension OneOf3: OneOfNType {
-    var valueAndType: (Any, Any.Type) {
+    var valueAndType: ValueAndType {
         switch self {
         case .t1(let v): return (v, T1.self)
         case .t2(let v): return (v, T2.self)
@@ -61,7 +56,7 @@ extension OneOf3: OneOfNType {
 }
 
 extension OneOf4: OneOfNType {
-    var valueAndType: (Any, Any.Type) {
+    var valueAndType: ValueAndType {
         switch self {
         case .t1(let v): return (v, T1.self)
         case .t2(let v): return (v, T2.self)
@@ -84,7 +79,7 @@ extension OneOf4: OneOfNType {
 }
 
 extension OneOf5: OneOfNType {
-    var valueAndType: (Any, Any.Type) {
+    var valueAndType: ValueAndType {
         switch self {
         case .t1(let v): return (v, T1.self)
         case .t2(let v): return (v, T2.self)
@@ -109,7 +104,7 @@ extension OneOf5: OneOfNType {
 }
 
 extension OneOf6: OneOfNType {
-    var valueAndType: (Any, Any.Type) {
+    var valueAndType: ValueAndType {
         switch self {
         case .t1(let v): return (v, T1.self)
         case .t2(let v): return (v, T2.self)
@@ -136,7 +131,7 @@ extension OneOf6: OneOfNType {
 }
 
 extension OneOf7: OneOfNType {
-    var valueAndType: (Any, Any.Type) {
+    var valueAndType: ValueAndType {
         switch self {
         case .t1(let v): return (v, T1.self)
         case .t2(let v): return (v, T2.self)
@@ -165,7 +160,7 @@ extension OneOf7: OneOfNType {
 }
 
 extension OneOf8: OneOfNType {
-    var valueAndType: (Any, Any.Type) {
+    var valueAndType: ValueAndType {
         switch self {
         case .t1(let v): return (v, T1.self)
         case .t2(let v): return (v, T2.self)

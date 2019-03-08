@@ -23,6 +23,7 @@
 		D39DC65221BA8D7000E43FA9 /* ImplicitFlow+CustomTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39DC65121BA8D7000E43FA9 /* ImplicitFlow+CustomTransition.swift */; };
 		D3C4779B20AE12E2004B8460 /* Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C4779A20AE12E2004B8460 /* Testing.swift */; };
 		D3C4779F20AE1ADD004B8460 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C4779E20AE1ADD004B8460 /* AssociatedObject.swift */; };
+		D3CF16DB2232C8AC0075DA8A /* ImplicitFlow+OutputTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF16DA2232C8AC0075DA8A /* ImplicitFlow+OutputTransform.swift */; };
 		D3D086D420D50A2800C283B4 /* ImplicitFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D086D320D50A2800C283B4 /* ImplicitFlowTests.swift */; };
 		D3D086D620D50F9C00C283B4 /* TestabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D086D520D50F9C00C283B4 /* TestabilityTests.swift */; };
 		D3E094FB20AC3284007E5715 /* StoryFlow.h in Headers */ = {isa = PBXBuildFile; fileRef = D3E094ED20AC3284007E5715 /* StoryFlow.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -64,6 +65,7 @@
 		D39DC65121BA8D7000E43FA9 /* ImplicitFlow+CustomTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImplicitFlow+CustomTransition.swift"; sourceTree = "<group>"; };
 		D3C4779A20AE12E2004B8460 /* Testing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testing.swift; sourceTree = "<group>"; };
 		D3C4779E20AE1ADD004B8460 /* AssociatedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
+		D3CF16DA2232C8AC0075DA8A /* ImplicitFlow+OutputTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImplicitFlow+OutputTransform.swift"; sourceTree = "<group>"; };
 		D3D086D320D50A2800C283B4 /* ImplicitFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitFlowTests.swift; sourceTree = "<group>"; };
 		D3D086D520D50F9C00C283B4 /* TestabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestabilityTests.swift; sourceTree = "<group>"; };
 		D3E094EA20AC3284007E5715 /* StoryFlow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StoryFlow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,6 +111,7 @@
 				D358B3AC20B49007009A9C90 /* ImplicitFlow.swift */,
 				D323F60B20B530B200C3E8E5 /* ImplicitFlow+OneOf.swift */,
 				D39DC65121BA8D7000E43FA9 /* ImplicitFlow+CustomTransition.swift */,
+				D3CF16DA2232C8AC0075DA8A /* ImplicitFlow+OutputTransform.swift */,
 			);
 			path = ImplicitFlow;
 			sourceTree = "<group>";
@@ -416,6 +419,7 @@
 				D3E0951120AC6A5F007E5715 /* UpdateHandling.swift in Sources */,
 				D3E0950D20AC329F007E5715 /* InputRequiring.swift in Sources */,
 				D38F4F0D20BEDCC50034E8B6 /* Unwinding.swift in Sources */,
+				D3CF16DB2232C8AC0075DA8A /* ImplicitFlow+OutputTransform.swift in Sources */,
 				D3E0951620AC6B68007E5715 /* BaseIntrefaces.swift in Sources */,
 				D358B3AD20B49007009A9C90 /* ImplicitFlow.swift in Sources */,
 				D3C4779F20AE1ADD004B8460 /* AssociatedObject.swift in Sources */,

@@ -10,7 +10,7 @@ extension Flow {
                 else { fatalError("Can't use `Flow.implict()` on vc that is not `OutputProducing` for produced `output` \(value) from `\(Swift.type(of: from))`.") }
 
             let outputType = Swift.type(of: outputProducing)._outputType
-            let (value, type) = unwrapped(value, outputType)
+            let (value, type) = OutputTransform.apply((value, outputType))
 
             // MARK: Update
 
