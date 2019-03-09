@@ -127,7 +127,7 @@ extension InputRequiring {
 ```
 TODO
 
-## `OuputProducing`
+## `OutputProducing`
 
 ```swift
 protocol OuputProducing {
@@ -157,7 +157,7 @@ TODO
 
 TODO
 
-## `OuputTransform`
+## `OutputTransform`
 
 TODO
 
