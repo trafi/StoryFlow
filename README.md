@@ -28,8 +28,7 @@ func doTask() {
         <td>
             <pre lang="swift">
 func doTask() {
-    &nbsp;
-   let nextVc = NextVc()
+    let nextVc = NextVc()
     nextVc.input = "Input"
     self.show(nextVc, sender: nil)
 }</pre>
@@ -64,7 +63,6 @@ func doTask() {
         <td>
             <pre lang="swift">
 func doTask() {
-    &nbsp;
     let prevVc = self.presenting as! PrevVc
     prevVc.handle("Update")
     self.dismiss(animated: true)
@@ -101,7 +99,6 @@ func doTask() {
         <td>
             <pre lang="swift">
 func doTask() {
-    &nbsp;
     let nav = self.presenting as! NavC
     let prevVc = nav.vcs[2] as! PrevVc
     &nbsp;
