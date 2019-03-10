@@ -20,16 +20,18 @@ Functional view controllers automatic flow coordination ✨ ([As presented in UI
         <td>
             <pre lang="swift">
 typealias OutputType = String
+&nbsp;
 func doTask() {
-  self.produce("Input")
+    self.produce("Input")
 }</pre>
         </td>
         <td>
             <pre lang="swift">
 func doTask() {
-  let nextVc = NextVc()
-  nextVc.input = "Input"
-  self.show(nextVc, sender: nil)
+    &nbsp;
+   let nextVc = NextVc()
+    nextVc.input = "Input"
+    self.show(nextVc, sender: nil)
 }</pre>
         </td>
     </tr>
@@ -54,16 +56,18 @@ func doTask() {
         <td>
             <pre lang="swift">
 typealias OutputType = String
+&nbsp;
 func doTask() {
-  self.produce("Update")
+    self.produce("Update")
 }</pre>
         </td>
         <td>
             <pre lang="swift">
 func doTask() {
-  let prevVc = self.presenting as! PrevVc
-  prevVc.handle("Update")
-  self.dismiss(animated: true)
+    &nbsp;
+    let prevVc = self.presenting as! PrevVc
+    prevVc.handle("Update")
+    self.dismiss(animated: true)
 }</pre>
         </td>
     </tr>
@@ -89,18 +93,22 @@ func doTask() {
         <td>
             <pre lang="swift">
 typealias OutputType = Int
+&nbsp;
 func doTask() {
-  self.produce(42)
+    self.produce(42)
 }</pre>
         </td>
         <td>
             <pre lang="swift">
 func doTask() {
-  let nav = self.presenting as! NavC
-  let prevVc = nav.vcs[2] as! PrevVc
-  prevVc.handle(42)
-  self.dismiss(animated: true)
-  nav.popTo(preVc, animated: false)
+    &nbsp;
+    let nav = self.presenting as! NavC
+    let prevVc = nav.vcs[2] as! PrevVc
+    &nbsp;
+    prevVc.handle(42)
+    &nbsp;
+    self.dismiss(animated: true)
+    nav.popTo(preVc, animated: false)
 }</pre>
         </td>
     </tr>
@@ -113,7 +121,7 @@ func doTask() {
 
 # Usage
 
-StoryFlow **isolates** your view controllers from from each other and **connects** them in a navigation flow using three simple generic protocols - [`InputRequiring`](#InputRequiring), [`OutputProducing`](#OutputProducing) and [`UpdateHandling`](#UpdateHandling). You can **customize** navigation transition styles using [`CustomTransition`](#CustomTransition) and routing using [`OutputTransform`](#OutputTransform).
+StoryFlow **isolates** your view controllers from each other and **connects** them in a navigation flow using three simple generic protocols - [`InputRequiring`](#InputRequiring), [`OutputProducing`](#OutputProducing) and [`UpdateHandling`](#UpdateHandling). You can **customize** navigation transition styles using [`CustomTransition`](#CustomTransition) and routing using [`OutputTransform`](#OutputTransform).
 
 ## `InputRequiring`
 
