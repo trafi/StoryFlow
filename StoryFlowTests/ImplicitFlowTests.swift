@@ -64,6 +64,26 @@ class ImplicitFlowTests: XCTestCase {
         XCTAssert(currentVc is To)
     }
 
+    func testProduce_itShowsNextVcByNestedOneOfOutputType() {
+
+        // Arrange
+        class T1 {}
+        class T2 {}
+        class T3 {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = OneOf2<OneOf2<T1, T2>, T3> }
+        class To: UIViewController, InputRequiring { typealias InputType = T1 }
+
+        let from = From().visible()
+
+        // Act
+        from.produce(.value(T1()))
+        XCTAssert(currentVc.didAppear())
+
+        // Assert
+        XCTAssert(currentVc is To)
+    }
+
     // MARK: Unwind
 
     func testProduce_itUnwindsToUpdateHandlingVcAndPassesOutput() {

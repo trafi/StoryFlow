@@ -25,15 +25,15 @@ public enum OutputTransform {
 
         let unwrapped = unwrapOneOfN(output)
         for transform in transforms {
-            guard let transformed = transform(unwrapped) else { break }
+            guard let transformed = transform(unwrapped) else { continue }
             return unwrapOneOfN(transformed)
         }
 
         return unwrapped
     }
 
-    private static let unwrapOneOfN: (ValueAndType) -> ValueAndType = {
-        guard let oneOf = $0.value as? OneOfNType else { return $0 }
-        return oneOf.valueAndType
+    private static func unwrapOneOfN(_ n: ValueAndType) -> ValueAndType {
+        guard let oneOf = n.value as? OneOfNType else { return n }
+        return unwrapOneOfN(oneOf.valueAndType)
     }
 }
