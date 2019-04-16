@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
 
-public typealias TransitionAttempt = (UIViewController, Any.Type, UIViewController) -> Bool
+public typealias IsUnwind = Bool
+public typealias TransitionAttempt = (UIViewController, Any.Type, UIViewController, IsUnwind) -> Bool
 
 public enum CustomTransition {
 
@@ -16,8 +17,9 @@ public enum CustomTransition {
     }
 
     public static func register<From: UIViewController, To: UIViewController>(fromType: From.Type, transition: Transition<To>) {
-        register { from, _, to in
+        register { from, _, to, isUnwind in
             guard
+                isUnwind == false,
                 from is From,
                 let to = to as? To
             else { return false }
@@ -28,8 +30,24 @@ public enum CustomTransition {
     }
 
     public static func register<InputType>(for inputType: InputType.Type, transition: Transition<UIViewController>) {
-        register { from, outputType, to in
-            guard outputType == inputType else { return false }
+        register { from, outputType, to, isUnwind in
+            guard
+                outputType == inputType,
+                isUnwind == false
+            else { return false }
+
+            transition.go(from, to)
+            return true
+        }
+    }
+
+    public static func registerUnwind<From: UIViewController, To: UIViewController>(fromType: From.Type, transition: Transition<To>) {
+        register { from, _, to, isUnwind in
+            guard
+                isUnwind == true,
+                from is From,
+                let to = to as? To
+            else { return false }
 
             transition.go(from, to)
             return true
@@ -40,7 +58,7 @@ public enum CustomTransition {
 
     static var attempts = [TransitionAttempt]()
 
-    static func attempt(from: UIViewController, outputType: Any.Type, to: UIViewController) -> Bool {
-        return attempts.contains { $0(from, outputType, to) == true }
+    static func attempt(from: UIViewController, outputType: Any.Type, to: UIViewController, isUnwind: Bool) -> Bool {
+        return attempts.contains { $0(from, outputType, to, isUnwind) == true }
     }
 }

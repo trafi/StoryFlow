@@ -328,7 +328,7 @@ class ImplicitFlowTests: XCTestCase {
 
         var customTransitionUsed = false
 
-        CustomTransition.register(transitionAttempt: { _, _, _ in
+        CustomTransition.register(transitionAttempt: { _, _, _, _ in
             customTransitionUsed = true
             return true
         })
@@ -437,9 +437,39 @@ class ImplicitFlowTests: XCTestCase {
 
         var customTransitionUsed = false
 
-        CustomTransition.register(transitionAttempt: { _, _, _ in
+        CustomTransition.register(transitionAttempt: { _, _, _, _ in
             customTransitionUsed = true
             return true
+        })
+
+        // Act
+        from.produce(T())
+
+        // Assert
+        XCTAssert(customTransitionUsed)
+
+        // Clean up
+        CustomTransition.reset()
+    }
+
+    func testProduce_itUsesCustomTransitionWithDefinedFromForUnwind() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling { func handle(update: T) { } }
+
+        let to = To().visible()
+        let from = From()
+
+        to.show(from, sender: nil)
+        XCTAssert(currentVc.didAppear())
+
+        var customTransitionUsed = false
+
+        CustomTransition.registerUnwind(fromType: From.self, transition: Transition.custom(To.self) { _, _ in
+            customTransitionUsed = true
         })
 
         // Act
