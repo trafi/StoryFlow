@@ -204,7 +204,7 @@ class MyViewController: UIViewController, OutputProducing {
 }
 ```
 
-To produce more than one type of output see the section about [`OneOfN`](#Multiple types) enum.
+To produce more than one type of output see the section about [`OneOfN`](#Multiple-types) enum.
 
 Also there's a convenience initializer designed to make `OutputProducing` vcs easy.
 ```swift
@@ -248,16 +248,8 @@ class UpdatableViewController: UIViewController, UpdateHandling {
 }
 ```
 
-To handle more than one type of output see the section about [`OneOfN`](#Multiple types) enum.
+To handle more than one type of output see the section about [`OneOfN`](#Multiple-types) enum.
 </details>
-
-## `CustomTransition`
-
-TODO
-
-## `OutputTransform`
-
-TODO
 
 ## Multiple types
 
@@ -325,6 +317,35 @@ class ZooViewController: UIViewController, IOU {
 }
 ```
 </details>
+
+## `CustomTransition`
+
+By default StoryFlow will show new vcs using `show` method and will unwind using relevant combination of `dismiss` and `pop` methods. This is customizable using static functions on `CustomTransition`.
+
+```swift
+extension CustomTransition {
+    struct Context {
+        let from, to: UIViewController
+        let output: Any, outputType: Any.Type
+        let isUnwind: Bool
+    }
+    typealias Attempt = (Context) -> Bool
+    
+    // All registered transitions will be tried before fallbacking to default behavior
+    static func register(attempt: @escaping Attempt) { ✨ }
+}
+```
+
+## `OutputTransform`
+
+By default [`OutputType`](#OutputProducing) have to exactly match to [`InputType`](#InputRequiring) and [`UpdateType`](#UpdateHandling) for destination to be found and for navigation transitions to happen. This can be customized using a static funtion on `OutputTransform`. Note, that `To` can be a [`OneOfN`](#Multiple-types) type, allowing for easy AB testing or other navigation splits that are determined outside of vcs.
+
+```swift
+extension OutputTransform {
+    // All relevant registered transforms will be applied before destination vc lookup
+    static func register<From, To>(transform: @escaping (From) -> To) { ✨ } 
+}
+```
 
 # Installation
 
