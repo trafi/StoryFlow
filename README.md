@@ -123,6 +123,21 @@ StoryFlow **isolates** your view controllers from each other and **connects** th
 ## `InputRequiring`
 
 ```swift
+class MyViewController: UIViewController, InputRequiring {
+
+    typealias InputType = MyType
+
+    override func viewDidLoad() {
+		    super.viewDidLoad()
+		    // `input` is injected during creation of VC
+		    self.someTextLabel.text = input.description
+    }
+}
+```
+
+TODO
+
+```swift
 protocol InputRequiring {
     associatedtype InputType
 }
@@ -130,9 +145,24 @@ extension InputRequiring {
     var input: InputType { return ✨ } // Returns 'output' of previous vc
 }
 ```
-TODO
 
 ## `OutputProducing`
+
+```swift
+class OutputViewController: UIViewController, OutputProducing {
+
+		typealias OutputType = MyType
+
+		@IBAction func goFromHere() {
+				// Storyflow will find and instantiate
+				// VC with `InputType = MyType`
+				self.produce(MyType())
+		}
+
+}
+```
+
+TODO
 
 ```swift
 protocol OuputProducing {
@@ -144,9 +174,23 @@ extension OuputProducing {
 
 typealias IO = InputRequiring & OutputProducing // For convenience
 ```
-TODO
 
 ## `UpdateHandling`
+
+```swift
+class UpdatableViewController: UIViewController, UpdateHandling {
+
+		typealias UpdateType = MyType
+
+		func handle(_ update: MyType) {
+				// do something ✨
+				// This will be executed when user produces
+				// `MyType` instance as `OutputType` in another VC
+		}
+}
+```
+
+TODO
 
 ```swift
 protocol UpdateHandling {
@@ -156,7 +200,6 @@ protocol UpdateHandling {
 
 typealias IOU = InputRequiring & OutputProducing & UpdateHandling // For convenience
 ```
-TODO
 
 ## `CustomTransition`
 
@@ -165,6 +208,50 @@ TODO
 ## `OutputTransform`
 
 TODO
+
+## Consuming/producing more than one type
+
+Given you can have more than one type of output - use `OneOfN` enums that allow you produce up to 8. And that's only at the single level. Nesting can produce ∞ outputs.
+
+### Outputting multiple types
+
+You can produce multiple types by defining `OneOfN` typealias for `OutputType`.
+
+The simplest one is calling `produce` with different instances of listed types:
+
+```swift
+class SchrodingerCatViewController: UIViewController, OutputProducing {
+
+		typealias OutputType = OneOf3<DeadCat, AliveCat, Dog>
+
+		func findOutStateOfTheCat() {
+				// notice that you DON'T need to
+				// WRAP the instance into `OneOf2`
+				// ...
+				// although you CAN
+				let state = arc4random() % 3
+				if state == 0 {
+						self.produce(DeadCat())
+				} else if state == 1 {
+						self.produce(.t2(AliveCat()))
+				} else {
+						self.produce(.value(Dog())) // 🐶
+				}
+		}
+}
+```
+
+Another one is by overriding the `produce` function that accepts `OneOfN` type:
+
+```swift
+class SchrodingerCatViewController: UIViewController, OutputProducing {
+
+		func produce(_ value: OneOf3<DeadCat, AliveCat, Dog>) {
+					???
+		}
+
+}
+```
 
 # Installation
 
