@@ -121,6 +121,22 @@ func doTask() {
 StoryFlow **isolates** your view controllers from each other and **connects** them in a navigation flow using three simple generic protocols - [`InputRequiring`](#InputRequiring), [`OutputProducing`](#OutputProducing) and [`UpdateHandling`](#UpdateHandling). You can **customize** navigation transition styles using [`CustomTransition`](#CustomTransition) and routing using [`OutputTransform`](#OutputTransform).
 
 ## `InputRequiring`
+	
+StoryFlow contains `InputRequiring` protocol. What vc gets created, injected and shown after [producing an output](#OutputProducing) is determined by finding the exact type match to `InputType`.
+
+This protocol has an extension that gives vc access to the produced output as its input. It is injected right after the init.
+
+```swift
+protocol InputRequiring {
+    associatedtype InputType
+}
+extension InputRequiring {
+    var input: InputType { return ✨ } // Returns 'output' produced by previous vc
+}
+```
+
+<details>
+<summary>🔎 see samples</summary><br>
 
 ```swift
 class MyViewController: UIViewController, InputRequiring {
@@ -128,41 +144,38 @@ class MyViewController: UIViewController, InputRequiring {
     typealias InputType = MyType
 
     override func viewDidLoad() {
-		    super.viewDidLoad()
-		    // `input` is injected during creation of VC
-		    self.someTextLabel.text = input.description
+        super.viewDidLoad()
+        // StoryFlow provides 'input' that was produced as an 'output' by previous vc
+        title = input.description
     }
 }
 ```
 
-TODO
-
 ```swift
-protocol InputRequiring {
-    associatedtype InputType
-}
-extension InputRequiring {
-    var input: InputType { return ✨ } // Returns 'output' of previous vc
+class JustViewController: UIViewController, InputRequiring {
+
+    // When vc doesn't require any input it should still declare it's 'InputType'.
+    // Otherwise it's impossible for this vc to be opened using StoryFlow.
+    struct InputType {}
 }
 ```
+
+Also there's a convenience initializer designed to make `InputRequiring` vcs easy.
+```swift
+extension InputRequiring {
+    init(input: InputType) { ✨ }
+}
+
+// Example
+let myType = MyType()
+let myVc = MyViewController(input: myType)
+myVc.input // myType
+```
+</details>
 
 ## `OutputProducing`
 
-```swift
-class OutputViewController: UIViewController, OutputProducing {
-
-		typealias OutputType = MyType
-
-		@IBAction func goFromHere() {
-				// Storyflow will find and instantiate
-				// VC with `InputType = MyType`
-				self.produce(MyType())
-		}
-
-}
-```
-
-TODO
+StoryFlow contains `OutputProducing` protocol. Conforming to it allows vcs to navigate to other vcs that are either in the nav stack and have the exact [`UpdateType`](#UpdateHandling) type or that have the exact [`InputType`](#InputRequiring) and will be initialized.
 
 ```swift
 protocol OuputProducing {
@@ -175,22 +188,43 @@ extension OuputProducing {
 typealias IO = InputRequiring & OutputProducing // For convenience
 ```
 
-## `UpdateHandling`
-
+<details>
+<summary>🔎 see samples</summary><br>
+	
 ```swift
-class UpdatableViewController: UIViewController, UpdateHandling {
+class MyViewController: UIViewController, OutputProducing {
 
-		typealias UpdateType = MyType
+    typealias OutputType = MyType
 
-		func handle(_ update: MyType) {
-				// do something ✨
-				// This will be executed when user produces
-				// `MyType` instance as `OutputType` in another VC
-		}
+    @IBAction func goToNextVc() {
+        // StoryFlow will go back to a vc in the nav stack with `UpdateType = MyType`
+	// Or it will create, inject and show a new vc with `InputType = MyType`
+        produce(MyType())
+    }
 }
 ```
 
-TODO
+To produce more than one type of output see the section about [`OneOfN`](#Multiple types) enum.
+
+Also there's a convenience initializer designed to make `OutputProducing` vcs easy.
+```swift
+extension OutputProducing {
+    init(produce: @escaping (OutputType) -> ()) { ✨ }
+}
+
+// Example
+let myType = MyType
+let myVc = MyViewController(produce: { output in
+    output == myType // true
+})
+myVc.produce(myType)
+
+```
+</details>
+
+## `UpdateHandling`
+
+StoryFlow contains `UpdateHandling` protocol. Conforming to it allows to navigate back to it and passing data. Unwind happens and `handle(update:)` gets called when `UpdateType` exactly matches the [produced output](#OutputProducing) type.
 
 ```swift
 protocol UpdateHandling {
@@ -201,6 +235,22 @@ protocol UpdateHandling {
 typealias IOU = InputRequiring & OutputProducing & UpdateHandling // For convenience
 ```
 
+<details>
+<summary>🔎 see samples</summary><br>
+	
+```swift
+class UpdatableViewController: UIViewController, UpdateHandling {
+
+    func handle(update: MyType) {
+        // Do something ✨
+        // This gets called when a presented vc produces an output of `OutputType = MyType`
+    }
+}
+```
+
+To handle more than one type of output see the section about [`OneOfN`](#Multiple types) enum.
+</details>
+
 ## `CustomTransition`
 
 TODO
@@ -209,49 +259,72 @@ TODO
 
 TODO
 
-## Consuming/producing more than one type
+## Multiple types
 
-Given you can have more than one type of output - use `OneOfN` enums that allow you produce up to 8. And that's only at the single level. Nesting can produce ∞ outputs.
-
-### Outputting multiple types
-
-You can produce multiple types by defining `OneOfN` typealias for `OutputType`.
-
-The simplest one is calling `produce` with different instances of listed types:
+To [require](#InputRequiring), [produce](#OutputProducing) and [handle](#UpdateHandling) more than one type StoryFlow introduces a `OneOfN` enum. It's used to define `OutputType`, `InputType` and `UpdateType` typealiases. Enums for up to `OneOf8` are defined, but it's possible to nest them as much as needed.
 
 ```swift
-class SchrodingerCatViewController: UIViewController, OutputProducing {
-
-		typealias OutputType = OneOf3<DeadCat, AliveCat, Dog>
-
-		func findOutStateOfTheCat() {
-				// notice that you DON'T need to
-				// WRAP the instance into `OneOf2`
-				// ...
-				// although you CAN
-				let state = arc4random() % 3
-				if state == 0 {
-						self.produce(DeadCat())
-				} else if state == 1 {
-						self.produce(.t2(AliveCat()))
-				} else {
-						self.produce(.value(Dog())) // 🐶
-				}
-		}
+enum OneOf2<T1, T2> {
+    case t1(T1), t2(T2)
 }
 ```
 
-Another one is by overriding the `produce` function that accepts `OneOfN` type:
-
+<details>
+<summary>🔎 see samples</summary><br>
+	
 ```swift
-class SchrodingerCatViewController: UIViewController, OutputProducing {
+class ZooViewController: UIViewController, IOU {
+    
+    // 'OneOfN' with 'InputRequiring'
+    typealias InputType = OneOf2<Jungle, City>
 
-		func produce(_ value: OneOf3<DeadCat, AliveCat, Dog>) {
-					???
-		}
-
+    override func viewDidLoad() {
+        super.viewDidLoad()
+	// Just use the 't1'...'tN' enum cases
+	switch input {
+	case .t1(let jungle):
+	    title = jungle.name
+	case .t2(let city):
+	    title = city.countryName
+	}
+    }
+    
+    // 'OneOfN' with 'OutputProducing'
+    typealias OutputType = OneOf8<Tiger, Lion, Panda, Koala, Fox, Dog, Cat, OneOf2<Pig, Cow>>
+    
+    @IBAction func openRandomGate() {
+        // There are a few ways 'produce' can be called with 'OneOfN' type
+	switch Int.random(in: 1...9) {
+        case 1: produce(.t1(🐯)) // Use 't1' enum case to wrap 'Tiger' type
+        case 2: produce(.value(🦁)) // Use convenience 'value' to wrap 'Lion' to 't2' case
+        case 3: produce(🐼) // Use directly with 'Panda' type
+        case 4: produce(🐨)
+        case 5: produce(🦊)
+        case 6: produce(🐶)
+        case 7: produce(🐱)
+        case 8: produce(.t8(.t1(🐷))) // Use 't8' and 't1' enum cases to double wrap it
+        case 9: produce(.value(🐮)) // Use 'value' to wrap it only once
+	}
+    }
+    
+    // 'OneOfN' with 'UpdateHandling'
+    typealias UpdateType = OneOf3<Day, Night, Holiday>
+    
+    func handle(update: UpdateType) {
+	// Just use the 't1'...'tN' enum cases
+	switch input {
+	case .t1(let day):
+	    subtitle = "Opened during \(day.openHours)"
+	case .t2(let night):
+	    subtitle = "Closed for \(night.sleepHours)"
+	    openRandomGate() // 🙈
+	case .t3(let holiday):
+	    subtitle = "Discounts on \(holiday.dates)"
+	}
+    }
 }
 ```
+</details>
 
 # Installation
 
