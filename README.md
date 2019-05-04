@@ -7,7 +7,9 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/trafi/StoryFlow/blob/master/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-Functional view controllers automatic flow coordination ✨ ([As presented in UIKonf 📺](https://youtu.be/1r7r-mqaSuI))
+Functional view controllers automatic flow coordination ✨<br>
+[⚡️ Lightning talk crash course from App Builders](https://youtu.be/mtBBlml759k)<br>
+[💭 Idea presentation from UIKonf](https://youtu.be/1r7r-mqaSuI)
 
 <table>
     <tr>
