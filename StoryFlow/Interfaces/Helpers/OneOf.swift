@@ -94,17 +94,22 @@ public protocol _OneOf8Type {
 // MARK: - _OneOf_Type
 
 extension OneOf2: _OneOf2Type {
+    public typealias T1 = T1; public typealias T2 = T2
     public static func value(_ v: T1) -> OneOf2<T1, T2> { return .t1(v) }
     public static func value(_ v: T2) -> OneOf2<T1, T2> { return .t2(v) }
 }
 
 extension OneOf3: _OneOf3Type {
+    public typealias T1 = T1; public typealias T2 = T2
+    public typealias T3 = T3
     public static func value(_ v: T1) -> OneOf3<T1, T2, T3> { return .t1(v) }
     public static func value(_ v: T2) -> OneOf3<T1, T2, T3> { return .t2(v) }
     public static func value(_ v: T3) -> OneOf3<T1, T2, T3> { return .t3(v) }
 }
 
 extension OneOf4: _OneOf4Type {
+    public typealias T1 = T1; public typealias T2 = T2
+    public typealias T3 = T3; public typealias T4 = T4
     public static func value(_ v: T1) -> OneOf4<T1, T2, T3, T4> { return .t1(v) }
     public static func value(_ v: T2) -> OneOf4<T1, T2, T3, T4> { return .t2(v) }
     public static func value(_ v: T3) -> OneOf4<T1, T2, T3, T4> { return .t3(v) }
@@ -112,6 +117,9 @@ extension OneOf4: _OneOf4Type {
 }
 
 extension OneOf5: _OneOf5Type {
+    public typealias T1 = T1; public typealias T2 = T2
+    public typealias T3 = T3; public typealias T4 = T4
+    public typealias T5 = T5
     public static func value(_ v: T1) -> OneOf5<T1, T2, T3, T4, T5> { return .t1(v) }
     public static func value(_ v: T2) -> OneOf5<T1, T2, T3, T4, T5> { return .t2(v) }
     public static func value(_ v: T3) -> OneOf5<T1, T2, T3, T4, T5> { return .t3(v) }
@@ -120,6 +128,10 @@ extension OneOf5: _OneOf5Type {
 }
 
 extension OneOf6: _OneOf6Type {
+    public typealias T1 = T1; public typealias T2 = T2
+    public typealias T3 = T3; public typealias T4 = T4
+    public typealias T5 = T5; public typealias T6 = T6
+
     public static func value(_ v: T1) -> OneOf6<T1, T2, T3, T4, T5, T6> { return .t1(v) }
     public static func value(_ v: T2) -> OneOf6<T1, T2, T3, T4, T5, T6> { return .t2(v) }
     public static func value(_ v: T3) -> OneOf6<T1, T2, T3, T4, T5, T6> { return .t3(v) }
@@ -129,6 +141,11 @@ extension OneOf6: _OneOf6Type {
 }
 
 extension OneOf7: _OneOf7Type {
+    public typealias T1 = T1; public typealias T2 = T2
+    public typealias T3 = T3; public typealias T4 = T4
+    public typealias T5 = T5; public typealias T6 = T6
+    public typealias T7 = T7
+
     public static func value(_ v: T1) -> OneOf7<T1, T2, T3, T4, T5, T6, T7> { return .t1(v) }
     public static func value(_ v: T2) -> OneOf7<T1, T2, T3, T4, T5, T6, T7> { return .t2(v) }
     public static func value(_ v: T3) -> OneOf7<T1, T2, T3, T4, T5, T6, T7> { return .t3(v) }
@@ -139,6 +156,11 @@ extension OneOf7: _OneOf7Type {
 }
 
 extension OneOf8: _OneOf8Type {
+    public typealias T1 = T1; public typealias T2 = T2
+    public typealias T3 = T3; public typealias T4 = T4
+    public typealias T5 = T5; public typealias T6 = T6
+    public typealias T7 = T7; public typealias T8 = T8
+
     public static func value(_ v: T1) -> OneOf8<T1, T2, T3, T4, T5, T6, T7, T8> { return .t1(v) }
     public static func value(_ v: T2) -> OneOf8<T1, T2, T3, T4, T5, T6, T7, T8> { return .t2(v) }
     public static func value(_ v: T3) -> OneOf8<T1, T2, T3, T4, T5, T6, T7, T8> { return .t3(v) }
