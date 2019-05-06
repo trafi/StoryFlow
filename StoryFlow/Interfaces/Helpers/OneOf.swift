@@ -28,6 +28,33 @@ public enum OneOf8<T1, T2, T3, T4, T5, T6, T7, T8> {
     case t1(T1), t2(T2), t3(T3), t4(T4), t5(T5), t6(T6), t7(T7), t8(T8)
 }
 
+// MARK: - Equatable
+
+extension OneOf2: Equatable
+where T1: Equatable, T2: Equatable {}
+
+extension OneOf3: Equatable
+where T1: Equatable, T2: Equatable, T3: Equatable {}
+
+extension OneOf4: Equatable
+where T1: Equatable, T2: Equatable, T3: Equatable, T4: Equatable {}
+
+extension OneOf5: Equatable
+where T1: Equatable, T2: Equatable, T3: Equatable, T4: Equatable,
+      T5: Equatable {}
+
+extension OneOf6: Equatable
+where T1: Equatable, T2: Equatable, T3: Equatable, T4: Equatable,
+      T5: Equatable, T6: Equatable {}
+
+extension OneOf7: Equatable
+where T1: Equatable, T2: Equatable, T3: Equatable, T4: Equatable,
+      T5: Equatable, T6: Equatable, T7: Equatable {}
+
+extension OneOf8: Equatable
+where T1: Equatable, T2: Equatable, T3: Equatable, T4: Equatable,
+      T5: Equatable, T6: Equatable, T7: Equatable, T8: Equatable {}
+
 // MARK: - Protocols
 
 public protocol _OneOf2Type {
