@@ -9,14 +9,15 @@ extension Flow {
             guard let outputProducing = from as? _AnyOutputProducing
                 else { fatalError("Can't use `Flow.implict()` on vc that is not `OutputProducing` for produced `output` \(value) from `\(Swift.type(of: from))`.") }
 
-            let outputType = Swift.type(of: outputProducing)._outputType
-            let (value, type) = OutputTransform.apply((value, outputType))
+            let output = OutputTransform.unwrapOneOfN((value, Swift.type(of: outputProducing)._outputType))
+            let (value, type) = OutputTransform.apply(output)
 
             // MARK: Update
 
             if let to = from.unwindVc(for: type) {
                 to.handleUpdate(value, type)
-                if CustomTransition.attempt(from: from, outputType: type, to: to, isUnwind: true) == false {
+                let transition = TransitionInfo(from: from, producedType: output.type, receivedType: type, to: to, isUnwind: true)
+                if CustomTransition.attempt(transition) == false {
                     Transition.unwind().go(from, to)
                 }
                 return
@@ -26,7 +27,8 @@ extension Flow {
 
             for inType in inputRequiringTypes where oneOf(inType._inputType, contains: type) {
                 let to = inType._create(input: value)
-                if CustomTransition.attempt(from: from, outputType: type, to: to, isUnwind: false) == false {
+                let transition = TransitionInfo(from: from, producedType: output.type, receivedType: type, to: to, isUnwind: false)
+                if CustomTransition.attempt(transition) == false {
                     from.show(to, sender: nil)
                 }
                 return

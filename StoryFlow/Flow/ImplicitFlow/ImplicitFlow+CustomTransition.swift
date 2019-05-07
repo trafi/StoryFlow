@@ -1,8 +1,14 @@
 import Foundation
 import UIKit
 
-public typealias IsUnwind = Bool
-public typealias TransitionAttempt = (UIViewController, Any.Type, UIViewController, IsUnwind) -> Bool
+public struct TransitionInfo {
+    public let from: UIViewController
+    public let producedType: Any.Type
+    public let receivedType: Any.Type
+    public let to: UIViewController
+    public let isUnwind: Bool
+}
+public typealias TransitionAttempt = (TransitionInfo) -> Bool
 
 public enum CustomTransition {
 
@@ -17,39 +23,39 @@ public enum CustomTransition {
     }
 
     public static func register<From: UIViewController, To: UIViewController>(fromType: From.Type, transition: Transition<To>) {
-        register { from, _, to, isUnwind in
+        register { info in
             guard
-                isUnwind == false,
-                from is From,
-                let to = to as? To
+                info.isUnwind == false,
+                info.from is From,
+                let to = info.to as? To
             else { return false }
 
-            transition.go(from, to)
+            transition.go(info.from, to)
             return true
         }
     }
 
     public static func register<InputType>(for inputType: InputType.Type, transition: Transition<UIViewController>) {
-        register { from, outputType, to, isUnwind in
+        register { info in
             guard
-                outputType == inputType,
-                isUnwind == false
+                info.producedType == inputType,
+                info.isUnwind == false
             else { return false }
 
-            transition.go(from, to)
+            transition.go(info.from, info.to)
             return true
         }
     }
 
     public static func registerUnwind<From: UIViewController, To: UIViewController>(fromType: From.Type, transition: Transition<To>) {
-        register { from, _, to, isUnwind in
+        register { info in
             guard
-                isUnwind == true,
-                from is From,
-                let to = to as? To
+                info.isUnwind == true,
+                info.from is From,
+                let to = info.to as? To
             else { return false }
 
-            transition.go(from, to)
+            transition.go(info.from, to)
             return true
         }
     }
@@ -58,7 +64,7 @@ public enum CustomTransition {
 
     static var attempts = [TransitionAttempt]()
 
-    static func attempt(from: UIViewController, outputType: Any.Type, to: UIViewController, isUnwind: Bool) -> Bool {
-        return attempts.contains { $0(from, outputType, to, isUnwind) == true }
+    static func attempt(_ transition: TransitionInfo) -> Bool {
+        return attempts.contains { $0(transition) == true }
     }
 }

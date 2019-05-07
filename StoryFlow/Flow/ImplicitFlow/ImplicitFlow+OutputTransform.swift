@@ -32,7 +32,7 @@ public enum OutputTransform {
         return unwrapped
     }
 
-    private static func unwrapOneOfN(_ n: ValueAndType) -> ValueAndType {
+    static func unwrapOneOfN(_ n: ValueAndType) -> ValueAndType {
         guard let oneOf = n.value as? OneOfNType else { return n }
         return unwrapOneOfN(oneOf.valueAndType)
     }
