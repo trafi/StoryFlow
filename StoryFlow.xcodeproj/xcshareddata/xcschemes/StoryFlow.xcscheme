@@ -23,7 +23,7 @@
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Testing"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       codeCoverageEnabled = "YES"
@@ -43,9 +43,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D3E094F220AC3284007E5715"
-               BuildableName = "_StoryFlowTests.xctest"
-               BlueprintName = "_StoryFlowTests"
+               BlueprintIdentifier = "D381D0E320D4805200B6C416"
+               BuildableName = "StoryFlowTests.xctest"
+               BlueprintName = "StoryFlowTests"
                ReferencedContainer = "container:StoryFlow.xcodeproj">
             </BuildableReference>
          </TestableReference>
