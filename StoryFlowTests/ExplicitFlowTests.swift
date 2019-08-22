@@ -90,6 +90,27 @@ class ExplicitFlowTests: XCTestCase {
 
     // MARK: Unwind
 
+    func testProduce_itUnwindsToUpdateHandlingVc() {
+
+        // Arrange
+        class From: UIViewController, OutputProducing { typealias OutputType = Int }
+        class To: UIViewController, UpdateHandling { typealias UpdateType = Int }
+
+        let to = To().visible()
+        let from = From()
+        from.flow = .unwind()
+
+        to.show(from, sender: nil)
+        XCTAssert(currentVc.didAppear())
+
+        // Act
+        from.produce(2018)
+        XCTAssert(currentVc.didDismiss())
+
+        // Assert
+        XCTAssert(currentVc == to)
+    }
+
     func testProduce_itUnwindsToUpdateHandlingVcAndPassesOutput() {
 
         // Arrange
