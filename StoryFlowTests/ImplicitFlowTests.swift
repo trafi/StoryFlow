@@ -2,6 +2,41 @@ import XCTest
 import StoryFlow
 
 class ImplicitFlowTests: XCTestCase {
+    
+    // MARK: Destination
+    
+    func testDestination_itReturnsNilWhenNoVcFound() {
+        
+        // Arrange
+        class T {}
+        
+        let output = T()
+        
+        // Act
+        let destination = Flow<T>.destination(for: output)
+        
+        // Assert
+        XCTAssert(destination == nil)
+    }
+    
+    
+    func testDestination_itReturnsVcWithInput() {
+        
+        // Arrange
+        class T {}
+        
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+        
+        let output = T()
+        
+        // Act
+        let destination = Flow<T>.destination(for: output)
+        
+        // Assert
+        XCTAssert(destination is To)
+        XCTAssert((destination as! To).input === output)
+    }
+    
 
     // MARK: Show
 
@@ -483,6 +518,29 @@ class ImplicitFlowTests: XCTestCase {
     }
 
     // MARK: Output transforms
+    
+    func testDestination_itReturnsNextVcByTransformedOutput() {
+        
+        // Arrange
+        class T1 {}
+        class T2 {}
+        
+        class To: UIViewController, InputRequiring { typealias InputType = T2 }
+        
+        let transformedOutput = T2()
+        
+        OutputTransform.register { (_: T1) in transformedOutput }
+        
+        // Act
+        let destination = Flow.destination(for: T1())
+        
+        // Assert
+        XCTAssert(destination is To)
+        XCTAssert((destination as! To).input === transformedOutput)
+        
+        // Clean up
+        OutputTransform.reset()
+    }
 
     func testProduce_itShowsNextVcByTransformedOutput() {
 

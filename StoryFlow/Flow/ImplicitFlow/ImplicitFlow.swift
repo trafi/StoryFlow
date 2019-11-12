@@ -2,6 +2,31 @@ import Foundation
 import UIKit
 
 extension Flow {
+        
+    /**
+     Returns view controller by matching type of provided `value`
+     
+     See [tests examples](https://github.com/trafi/StoryFlow/blob/master/StoryFlowTests/ImplicitFlowTests.swift).
+     
+     - Parameter value: The value being passed to next view controller.
+     */
+    public static func destination(for value: Value) -> UIViewController? {
+        return destination(for: (value, Value.self))
+    }
+    
+    private static func destination(for output: ValueAndType) -> UIViewController? {
+        let (value, type) = OutputTransform.apply(output)
+        
+        for inType in inputRequiringTypes where oneOf(inType._inputType, contains: type) {
+            return inType._create(input: value)
+        }
+        
+        return nil
+    }
+    
+}
+
+extension Flow {
 
     public static func implicit() -> Flow {
         return Flow { from, value in
@@ -24,9 +49,8 @@ extension Flow {
             }
 
             // MARK: Input
-
-            for inType in inputRequiringTypes where oneOf(inType._inputType, contains: type) {
-                let to = inType._create(input: value)
+            
+            if let to = Flow<Any>.destination(for: output) {
                 let transition = TransitionInfo(from: from, producedType: output.type, receivedType: type, to: to, isUnwind: false)
                 if CustomTransition.attempt(transition) == false {
                     from.show(to, sender: nil)
