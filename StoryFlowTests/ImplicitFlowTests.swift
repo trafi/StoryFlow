@@ -22,7 +22,7 @@ class ImplicitFlowTests: XCTestCase {
 
         // Assert
         XCTAssert(currentVc is To)
-        XCTAssert((currentVc as! To).input === output)
+        XCTAssert((currentVc as? To)?.input === output)
     }
 
     func testProduce_itShowsNextVcByOneOfOutputType() {
@@ -503,7 +503,7 @@ class ImplicitFlowTests: XCTestCase {
 
         // Assert
         XCTAssert(currentVc is To)
-        XCTAssert((currentVc as! To).input === transformedOutput)
+        XCTAssert((currentVc as? To)?.input === transformedOutput)
 
         // Clean up
         OutputTransform.reset()
@@ -529,7 +529,7 @@ class ImplicitFlowTests: XCTestCase {
 
         // Assert
         XCTAssert(currentVc is To)
-        XCTAssert((currentVc as! To).input === transformedOutput)
+        XCTAssert((currentVc as? To)?.input === transformedOutput)
 
         // Clean up
         OutputTransform.reset()
@@ -555,7 +555,7 @@ class ImplicitFlowTests: XCTestCase {
 
         // Assert
         XCTAssert(currentVc is To)
-        XCTAssert((currentVc as! To).input === transformedOutput)
+        XCTAssert((currentVc as? To)?.input === transformedOutput)
 
         // Clean up
         OutputTransform.reset()
@@ -581,7 +581,7 @@ class ImplicitFlowTests: XCTestCase {
 
         // Assert
         XCTAssert(currentVc is To)
-        XCTAssert((currentVc as! To).input === transformedOutput)
+        XCTAssert((currentVc as? To)?.input === transformedOutput)
 
         // Clean up
         OutputTransform.reset()
