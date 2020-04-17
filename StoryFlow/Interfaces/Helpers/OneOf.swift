@@ -1,30 +1,30 @@
 import Foundation
 
-public enum OneOf2<T1, T2> {
+public indirect enum OneOf2<T1, T2> {
     case t1(T1), t2(T2)
 }
 
-public enum OneOf3<T1, T2, T3> {
+public indirect enum OneOf3<T1, T2, T3> {
     case t1(T1), t2(T2), t3(T3)
 }
 
-public enum OneOf4<T1, T2, T3, T4> {
+public indirect enum OneOf4<T1, T2, T3, T4> {
     case t1(T1), t2(T2), t3(T3), t4(T4)
 }
 
-public enum OneOf5<T1, T2, T3, T4, T5> {
+public indirect enum OneOf5<T1, T2, T3, T4, T5> {
     case t1(T1), t2(T2), t3(T3), t4(T4), t5(T5)
 }
 
-public enum OneOf6<T1, T2, T3, T4, T5, T6> {
+public indirect enum OneOf6<T1, T2, T3, T4, T5, T6> {
     case t1(T1), t2(T2), t3(T3), t4(T4), t5(T5), t6(T6)
 }
 
-public enum OneOf7<T1, T2, T3, T4, T5, T6, T7> {
+public indirect enum OneOf7<T1, T2, T3, T4, T5, T6, T7> {
     case t1(T1), t2(T2), t3(T3), t4(T4), t5(T5), t6(T6), t7(T7)
 }
 
-public enum OneOf8<T1, T2, T3, T4, T5, T6, T7, T8> {
+public indirect enum OneOf8<T1, T2, T3, T4, T5, T6, T7, T8> {
     case t1(T1), t2(T2), t3(T3), t4(T4), t5(T5), t6(T6), t7(T7), t8(T8)
 }
 
