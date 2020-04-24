@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public protocol UpdateHandling: _AnyUpdateHandling {
     associatedtype UpdateType
