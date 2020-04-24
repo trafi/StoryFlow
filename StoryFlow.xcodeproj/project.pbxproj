@@ -33,6 +33,7 @@
 		D3E0951320AC6AAD007E5715 /* Combinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E0951220AC6AAD007E5715 /* Combinations.swift */; };
 		D3E0951620AC6B68007E5715 /* BaseIntrefaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E0951520AC6B68007E5715 /* BaseIntrefaces.swift */; };
 		D3E0951820ACCC8E007E5715 /* ExplicitFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E0951720ACCC8E007E5715 /* ExplicitFlow.swift */; };
+		DD75FCA62452DB0B0008F5DE /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75FCA52452DB0B0008F5DE /* Package.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		D3E0951220AC6AAD007E5715 /* Combinations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combinations.swift; sourceTree = "<group>"; };
 		D3E0951520AC6B68007E5715 /* BaseIntrefaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseIntrefaces.swift; sourceTree = "<group>"; };
 		D3E0951720ACCC8E007E5715 /* ExplicitFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplicitFlow.swift; sourceTree = "<group>"; };
+		DD75FCA52452DB0B0008F5DE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,7 +180,8 @@
 		D3E094E020AC3284007E5715 = {
 			isa = PBXGroup;
 			children = (
-				D3E094EC20AC3284007E5715 /* StoryFlow */,
+				DD75FCA52452DB0B0008F5DE /* Package.swift */,
+				DD75FCA42452DAF80008F5DE /* Sources */,
 				D381D0E720D4805200B6C416 /* StoryFlowTests */,
 				D3E094EB20AC3284007E5715 /* Products */,
 				D3DE87A320D46A8D0078645E /* Frameworks */,
@@ -244,6 +247,14 @@
 				D374ECDA20B4BD1E00481F05 /* Internal */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		DD75FCA42452DAF80008F5DE /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D3E094EC20AC3284007E5715 /* StoryFlow */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -411,6 +422,7 @@
 				D3E0951820ACCC8E007E5715 /* ExplicitFlow.swift in Sources */,
 				D374ECDC20B4BD3E00481F05 /* OneOf.swift in Sources */,
 				D39DC65221BA8D7000E43FA9 /* ImplicitFlow+CustomTransition.swift in Sources */,
+				DD75FCA62452DB0B0008F5DE /* Package.swift in Sources */,
 				D3C4779B20AE12E2004B8460 /* Testing.swift in Sources */,
 				D3E0951320AC6AAD007E5715 /* Combinations.swift in Sources */,
 				D374ECDF20B4C0CE00481F05 /* ExplicitFlow+OneOf.swift in Sources */,
@@ -644,7 +656,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = StoryFlow/Info.plist;
+				INFOPLIST_FILE = Sources/StoryFlow/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -668,7 +680,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = StoryFlow/Info.plist;
+				INFOPLIST_FILE = Sources/StoryFlow/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -756,7 +768,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = StoryFlow/Info.plist;
+				INFOPLIST_FILE = Sources/StoryFlow/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

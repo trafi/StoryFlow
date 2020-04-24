@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 #if TESTING
 func fatalError(_ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) -> Never {

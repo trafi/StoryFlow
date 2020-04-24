@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public indirect enum OneOf2<T1, T2> {
     case t1(T1), t2(T2)
