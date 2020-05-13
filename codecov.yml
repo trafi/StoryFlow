@@ -1,0 +1,3 @@
+ignore:
+  - "StoryFlowTests"
+  - "Sources/StoryFlow/Interfaces/Helpers/Internal"
