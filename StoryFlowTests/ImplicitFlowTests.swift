@@ -119,6 +119,50 @@ class ImplicitFlowTests: XCTestCase {
         XCTAssert(currentVc is To)
     }
 
+    func testProduce_whenInNav_itShowsNextVc() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From()
+
+        let nav = UINavigationController().visible()
+        nav.setViewControllers([UIViewController(), UIViewController(), from], animated: false)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(currentVc is To)
+    }
+
+    func testProduce_whenInTab_itShowsNextVc() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From()
+
+        let tab = UITabBarController().visible()
+        tab.setViewControllers([from, UIViewController(), UIViewController()], animated: false)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(currentVc is To)
+    }
+
     // MARK: Unwind
 
     func testProduce_itUnwindsToUpdateHandlingVcAndPassesOutput() {

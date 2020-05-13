@@ -3,21 +3,21 @@ import UIKit
 
 extension UIViewController {
 
-    func unwindVc(for updateType: Any.Type, filterOutSelf: Bool = true) -> UIViewController? {
+    func unwindVc(for updateType: Any.Type) -> UIViewController? {
+        unwindVc(for: updateType, from: self)
+    }
+
+    private func unwindVc(for updateType: Any.Type, from source: UIViewController) -> UIViewController? {
 
         Thread.onMain {
-            if canHandle(updateType, filterOutSelf: filterOutSelf) {
+            if canHandle(updateType, from: source) {
                 return self
-            } else if let vc = navBackStack?.first(where: { $0.canHandle(updateType) }) {
+            } else if let vc = navStack?.first(where: { $0.canHandle(updateType, from: source) }) {
                 return vc
-            } else if let vc = otherTabs?.first(where: { $0.canHandle(updateType) }) {
+            } else if let vc = tabs?.first(where: { $0.canHandle(updateType, from: source) }) {
                 return vc
             } else {
-                for nonVisibleVc in nonVisibleVcs {
-                    guard let vc = nonVisibleVc.unwindVc(for: updateType, filterOutSelf: false) else { continue }
-                    return vc
-                }
-                return nil
+                return (parent ?? presentingViewController)?.unwindVc(for: updateType, from: source)
             }
         }
     }
@@ -31,8 +31,8 @@ extension UIViewController {
 
 private extension UIViewController {
 
-    func canHandle(_ updateType: Any.Type, filterOutSelf: Bool = false) -> Bool {
-        return visibleVcs.contains { $0.isVc(for: updateType) && (filterOutSelf == false || $0 !== self) }
+    func canHandle(_ updateType: Any.Type, from source: UIViewController) -> Bool {
+        return visibleVcs.contains { $0.isVc(for: updateType) && $0 !== source }
     }
 
     var visibleVcs: [UIViewController] {
@@ -47,20 +47,16 @@ private extension UIViewController {
         }
     }
 
-    var nonVisibleVcs: [UIViewController] {
-        [presentingViewController, parent].compactMap { $0 }
-            + (navBackStack ?? [])
-            + (otherTabs ?? [])
+    func firstChild<T>(_ t: T.Type) -> T? {
+        self as? T ?? children.first { $0.firstChild(t) != nil }?.firstChild(t)
     }
 
-    var navBackStack: [UIViewController]? {
-        guard let nav = navigationController ?? self as? UINavigationController else { return nil }
-        return Array(nav.viewControllers.reversed().dropFirst())
+    var navStack: [UIViewController]? {
+        firstChild(UINavigationController.self)?.viewControllers.reversed()
     }
 
-    var otherTabs: [UIViewController]? {
-        guard let tab = tabBarController ?? self as? UITabBarController else { return nil }
-        return tab.viewControllers?.filter { $0 !== tab.selectedViewController }
+    var tabs: [UIViewController]? {
+        firstChild(UITabBarController.self)?.viewControllers
     }
 
     func isVc(for updateType: Any.Type) -> Bool {
