@@ -1,0 +1,16 @@
+name: Test
+on:
+  pull_request:
+    branches:
+    - master
+  push:
+    branches:
+    - master
+jobs:
+  test:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run StoryFlow tests
+        run: xcodebuild test -scheme StoryFlow -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty
+      - uses: codecov/codecov-action@v1
