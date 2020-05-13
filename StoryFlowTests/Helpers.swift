@@ -17,6 +17,7 @@ var currentVc: UIViewController {
 
     func currentVc(from vc: UIViewController) -> UIViewController {
         return (vc as? UINavigationController)?.topViewController.flatMap(currentVc)
+            ?? (vc as? UITabBarController)?.selectedViewController.flatMap(currentVc)
             ?? vc.presentedViewController.flatMap(currentVc)
             ?? vc
     }

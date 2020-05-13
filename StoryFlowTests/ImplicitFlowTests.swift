@@ -316,6 +316,65 @@ class ImplicitFlowTests: XCTestCase {
         
     }
 
+    func testProduce_itUnwindsWithTabChange() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling {
+            func handle(update: T) { self.update = update }
+            var update: T!
+        }
+
+        let to = To()
+        let from = From()
+
+        let tab = UITabBarController().visible()
+        tab.setViewControllers([from, to], animated: false)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(tab.selectedIndex == 1)
+        XCTAssert(currentVc == to)
+        XCTAssert(to.update === output)
+    }
+
+    func testProduce_itUnwindsWithTabChangeInNavigationStack() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling {
+            func handle(update: T) { self.update = update }
+            var update: T!
+        }
+
+        let to = To()
+        let from = From()
+
+        let nav = UINavigationController()
+        nav.setViewControllers([to, UIViewController()], animated: false)
+
+        let tab = UITabBarController().visible()
+        tab.setViewControllers([from, nav], animated: false)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(tab.selectedIndex == 1)
+        XCTAssert(currentVc == to)
+        XCTAssert(to.update === output)
+    }
+
     func testProduce_itUnwindsInComplexFlow() {
 
         // Arrange
@@ -325,9 +384,13 @@ class ImplicitFlowTests: XCTestCase {
         class To: UIViewController, UpdateHandling { func handle(update: T) { } }
 
         let to = To()
-        UINavigationController(rootViewController: to).visible()
+        let tab = UITabBarController().visible()
+        tab.setViewControllers([UINavigationController(rootViewController: to), UIViewController()],
+                               animated: false)
 
         to.show(UIViewController(), sender: nil)
+
+        tab.selectedIndex = 1
 
         currentVc.show(UINavigationController(rootViewController: UIViewController()), sender: nil)
         XCTAssert(currentVc.didAppear())
@@ -337,11 +400,22 @@ class ImplicitFlowTests: XCTestCase {
         let from = From()
         currentVc.show(from, sender: nil)
 
+        // TabBar
+        //   - Navigation
+        //     - >> TO <<
+        //     - dummy
+        //   - dummy
+        //     - Navigation
+        //       - dummy
+        //       - dummy
+        //       - << From >>
+
         // Act
         from.produce(T())
         XCTAssert(currentVc.didDismiss())
 
         // Assert
+        XCTAssert(tab.selectedIndex == 0)
         XCTAssert(currentVc == to)
     }
 
