@@ -5,18 +5,22 @@ extension UIViewController {
 
     func unwindVc(for updateType: Any.Type, filterOutSelf: Bool = true) -> UIViewController? {
 
-        if canHandle(updateType, filterOutSelf: filterOutSelf) {
-            return self
-        } else if let vc = navBackStack?.first(where: { $0.canHandle(updateType) }) {
-            return vc
-        } else {
-            return presentingViewController?.unwindVc(for: updateType, filterOutSelf: false)
-                ?? parent?.unwindVc(for: updateType, filterOutSelf: false)
+        Thread.onMain {
+            if canHandle(updateType, filterOutSelf: filterOutSelf) {
+                return self
+            } else if let vc = navBackStack?.first(where: { $0.canHandle(updateType) }) {
+                return vc
+            } else {
+                return presentingViewController?.unwindVc(for: updateType, filterOutSelf: false)
+                    ?? parent?.unwindVc(for: updateType, filterOutSelf: false)
+            }
         }
     }
 
     func handleUpdate(_ value: Any, _ type: Any.Type) {
-        visibleVcs.forEach { $0.asVc(for: type)?._handleAny(update: value) }
+        Thread.onMain {
+            visibleVcs.forEach { $0.asVc(for: type)?._handleAny(update: value) }
+        }
     }
 }
 
