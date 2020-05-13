@@ -308,7 +308,6 @@ class ImplicitFlowTests: XCTestCase {
 
         // Act
         from.produce(output)
-        XCTAssert(currentVc.didDismiss())
 
         // Assert
         XCTAssert(currentVc == to)
@@ -329,17 +328,14 @@ class ImplicitFlowTests: XCTestCase {
         UINavigationController(rootViewController: to).visible()
 
         to.show(UIViewController(), sender: nil)
-        XCTAssert(currentVc.didAppear())
 
         currentVc.show(UINavigationController(rootViewController: UIViewController()), sender: nil)
         XCTAssert(currentVc.didAppear())
 
         currentVc.show(UIViewController(), sender: nil)
-        XCTAssert(currentVc.didAppear())
 
         let from = From()
         currentVc.show(from, sender: nil)
-        XCTAssert(currentVc.didAppear())
 
         // Act
         from.produce(T())
