@@ -1,4 +1,4 @@
-name: Test
+name: CI
 on:
   pull_request:
     branches:
@@ -12,5 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run StoryFlow tests
-        run: xcodebuild test -scheme StoryFlow -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty
+        run: |
+          set -eo pipefail
+          xcodebuild test -scheme StoryFlow -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty
       - uses: codecov/codecov-action@v1

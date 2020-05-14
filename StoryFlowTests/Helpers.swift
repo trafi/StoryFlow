@@ -101,7 +101,7 @@ extension XCTestCase {
         DispatchQueue.global(qos: .userInitiated).async { _ = testCase() }
 
         // Assert
-        waitForExpectations(timeout: 0.1) { _ in
+        waitForExpectations(timeout: 0.3) { _ in
             // Clean up
             FatalErrorUtil.restoreFatalError()
         }
