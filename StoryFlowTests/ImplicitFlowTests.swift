@@ -119,6 +119,50 @@ class ImplicitFlowTests: XCTestCase {
         XCTAssert(currentVc is To)
     }
 
+    func testProduce_whenInNav_itShowsNextVc() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From()
+
+        let nav = UINavigationController().visible()
+        nav.setViewControllers([UIViewController(), UIViewController(), from], animated: false)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(currentVc is To)
+    }
+
+    func testProduce_whenInTab_itShowsNextVc() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From()
+
+        let tab = UITabBarController().visible()
+        tab.setViewControllers([from, UIViewController(), UIViewController()], animated: false)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(currentVc is To)
+    }
+
     // MARK: Unwind
 
     func testProduce_itUnwindsToUpdateHandlingVcAndPassesOutput() {
@@ -308,13 +352,71 @@ class ImplicitFlowTests: XCTestCase {
 
         // Act
         from.produce(output)
-        XCTAssert(currentVc.didDismiss())
 
         // Assert
         XCTAssert(currentVc == to)
         XCTAssert(to.update === output)
         XCTAssertNil(from.update)
         
+    }
+
+    func testProduce_itUnwindsWithTabChange() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling {
+            func handle(update: T) { self.update = update }
+            var update: T!
+        }
+
+        let to = To()
+        let from = From()
+
+        let tab = UITabBarController().visible()
+        tab.setViewControllers([from, to], animated: false)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(tab.selectedIndex == 1)
+        XCTAssert(currentVc == to)
+        XCTAssert(to.update === output)
+    }
+
+    func testProduce_itUnwindsWithTabChangeInNavigationStack() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling {
+            func handle(update: T) { self.update = update }
+            var update: T!
+        }
+
+        let to = To()
+        let from = From()
+
+        let nav = UINavigationController()
+        nav.setViewControllers([to, UIViewController()], animated: false)
+
+        let tab = UITabBarController().visible()
+        tab.setViewControllers([from, nav], animated: false)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+
+        // Assert
+        XCTAssert(tab.selectedIndex == 1)
+        XCTAssert(currentVc == to)
+        XCTAssert(to.update === output)
     }
 
     func testProduce_itUnwindsInComplexFlow() {
@@ -326,26 +428,38 @@ class ImplicitFlowTests: XCTestCase {
         class To: UIViewController, UpdateHandling { func handle(update: T) { } }
 
         let to = To()
-        UINavigationController(rootViewController: to).visible()
+        let tab = UITabBarController().visible()
+        tab.setViewControllers([UINavigationController(rootViewController: to), UIViewController()],
+                               animated: false)
 
         to.show(UIViewController(), sender: nil)
-        XCTAssert(currentVc.didAppear())
+
+        tab.selectedIndex = 1
 
         currentVc.show(UINavigationController(rootViewController: UIViewController()), sender: nil)
         XCTAssert(currentVc.didAppear())
 
         currentVc.show(UIViewController(), sender: nil)
-        XCTAssert(currentVc.didAppear())
 
         let from = From()
         currentVc.show(from, sender: nil)
-        XCTAssert(currentVc.didAppear())
+
+        // TabBar
+        //   - Navigation
+        //     - >> TO <<
+        //     - dummy
+        //   - dummy
+        //     - Navigation
+        //       - dummy
+        //       - dummy
+        //       - << From >>
 
         // Act
         from.produce(T())
         XCTAssert(currentVc.didDismiss())
 
         // Assert
+        XCTAssert(tab.selectedIndex == 0)
         XCTAssert(currentVc == to)
     }
 

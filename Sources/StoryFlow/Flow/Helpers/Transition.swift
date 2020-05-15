@@ -26,12 +26,33 @@ extension Transition where To == UIViewController {
 
     public static func unwind(animated: Bool = true) -> Transition {
         return Transition {
-            if $1.presentedViewController != nil {
-                $1.navigationController?.popToViewController($1, animated: false)
+
+            let parentInTab = $1.parentInTabBarController
+            let isWrongTab = parentInTab != $1.tabBarController?.selectedViewController
+            let isPresenting = $1.presentedViewController != nil
+
+            // 1. Navigation pop
+            if let nav = $1.navigationController {
+                let animatedPop = animated && !isPresenting && !isWrongTab
+                nav.popToViewController($1, animated: animatedPop)
+            }
+
+            // 2. Tab change
+            if isWrongTab {
+                $1.tabBarController?.selectedViewController = parentInTab
+            }
+
+            // 3. Presented dismiss
+            if isPresenting {
                 $1.dismiss(animated: animated, completion: nil)
-            } else {
-                $1.navigationController?.popToViewController($1, animated: animated)
             }
         }
+    }
+}
+
+private extension UIViewController {
+
+    var parentInTabBarController: UIViewController? {
+        self.parent == self.tabBarController ? self : self.parent?.parentInTabBarController
     }
 }
