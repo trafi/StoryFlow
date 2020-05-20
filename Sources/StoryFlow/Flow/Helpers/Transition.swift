@@ -29,7 +29,7 @@ extension Transition where To == UIViewController {
 
             let parentInTab = $1.parentInTabBarController
             let isWrongTab = parentInTab != $1.tabBarController?.selectedViewController
-            let isPresenting = $1.presentedViewController != nil
+            let isPresenting = $1.presentedViewController != nil && $1.presentedViewController?.isBeingPresented == false
 
             // 1. Navigation pop
             if let nav = $1.navigationController {

@@ -242,6 +242,7 @@ class ImplicitFlowTests: XCTestCase {
 
         let from = From()
         container.show(from, sender: nil)
+        XCTAssert(currentVc.didAppear())
 
         let output = T()
 
@@ -327,6 +328,68 @@ class ImplicitFlowTests: XCTestCase {
 
         // Assert
         XCTAssert(currentVc == to)
+        XCTAssert(to.update === output)
+    }
+
+    func testProduce_whenParentIsPresentingDuringUnwind_itUnwindsWihtoutInteruptingPresentation() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling {
+            func handle(update: T) {
+                self.update = update
+                self.present(UIViewController(), animated: true, completion: nil)
+            }
+            var update: T!
+        }
+
+        let to = To().visible()
+        let from = From()
+
+        to.addChild(from)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+        XCTAssert(currentVc.didAppear())
+
+        // Assert
+        XCTAssert(currentVc == to.presentedViewController!)
+        XCTAssert(to.update === output)
+    }
+
+    func testProduce_whenPresentingDuringUnwind_itUnwindsWihtoutInteruptingPresentation() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, UpdateHandling {
+            func handle(update: T) {
+                self.update = update
+                self.present(UIViewController(), animated: true, completion: nil)
+            }
+            var update: T!
+        }
+
+        let to = To()
+        let from = From()
+        UINavigationController(rootViewController: to).visible()
+
+        to.show(from, sender: nil)
+        XCTAssert(currentVc.didAppear())
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+        XCTAssert(currentVc.didAppear())
+
+        // Assert
+        XCTAssert(currentVc == to.presentedViewController!)
         XCTAssert(to.update === output)
     }
 
@@ -443,6 +506,7 @@ class ImplicitFlowTests: XCTestCase {
 
         let from = From()
         currentVc.show(from, sender: nil)
+        XCTAssert(currentVc.didAppear())
 
         // TabBar
         //   - Navigation
