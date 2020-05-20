@@ -163,6 +163,33 @@ class ImplicitFlowTests: XCTestCase {
         XCTAssert(currentVc is To)
     }
 
+    // MARK: Present
+
+    func testProduce_whenDismissingPresented_itPresentsAfterDismiss() {
+
+        // Arrange
+        class T {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T }
+        class To: UIViewController, InputRequiring { typealias InputType = T }
+
+        let from = From().visible()
+        from.present(UIViewController(), animated: true, completion: nil)
+        XCTAssert(currentVc.didAppear())
+
+        from.dismiss(animated: true, completion: nil)
+
+        let output = T()
+
+        // Act
+        from.produce(output)
+        XCTAssert(currentVc.didDismiss())
+
+        // Assert
+        XCTAssert(currentVc is To)
+
+    }
+
     // MARK: Unwind
 
     func testProduce_itUnwindsToUpdateHandlingVcAndPassesOutput() {

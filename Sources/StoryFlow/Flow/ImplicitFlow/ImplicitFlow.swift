@@ -53,7 +53,7 @@ extension Flow {
             if let to = Flow<Any>.destination(for: output) {
                 let transition = TransitionInfo(from: from, producedType: output.type, receivedType: type, to: to, isUnwind: false)
                 if CustomTransition.attempt(transition) == false {
-                    from.show(to, sender: nil)
+                    Transition.show(UIViewController.self).go(from, to)
                 }
                 return
             }
