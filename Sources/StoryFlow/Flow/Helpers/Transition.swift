@@ -2,6 +2,11 @@ import Foundation
 import UIKit
 
 public struct Transition<To: UIViewController> {
+    init(go: @escaping (UIViewController, To) -> ()) {
+        self.go = { from, to in
+            from.afterDismissingCompleted { go(from, to) }
+        }
+    }
     let go: (UIViewController, To) -> ()
 }
 
@@ -14,11 +19,11 @@ extension Transition {
     }
 
     public static func show(_: To.Type) -> Transition {
-        return Transition { from, to in from.afterDismissingCompleted { from.show(to, sender: nil) } }
+        return Transition { $0.show($1, sender: nil) }
     }
 
     public static func present(_: To.Type, animated: Bool = true) -> Transition {
-        return Transition { from, to in from.afterDismissingCompleted { from.present(to, animated: animated) } }
+        return Transition { $0.present($1, animated: animated) }
     }
 }
 
@@ -58,11 +63,11 @@ private extension UIViewController {
         self.parent == self.tabBarController ? self : self.parent?.parentInTabBarController
     }
 
-    func afterDismissingCompleted(_ work: @escaping () -> ()) {
+    func afterDismissingCompleted(_ transition: @escaping () -> ()) {
         if navigationController == nil && presentedViewController?.isBeingDismissed == true {
-            dismiss(animated: true, completion: work)
+            dismiss(animated: true, completion: transition)
         } else {
-            work()
+            transition()
         }
     }
 }
