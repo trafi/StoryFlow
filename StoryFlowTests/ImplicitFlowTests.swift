@@ -496,7 +496,7 @@ class ImplicitFlowTests: XCTestCase {
         nav.setViewControllers([to, UIViewController()], animated: false)
 
         let tab = UITabBarController().visible()
-        tab.setViewControllers([from, nav], animated: false)
+        tab.setViewControllers([UINavigationController(rootViewController: from), nav], animated: false)
 
         let output = T()
 

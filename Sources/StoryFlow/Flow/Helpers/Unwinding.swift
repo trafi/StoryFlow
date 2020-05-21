@@ -12,9 +12,9 @@ extension UIViewController {
         Thread.onMain {
             if canHandle(updateType, from: source) {
                 return self
-            } else if let vc = navStack?.first(where: { $0.canHandle(updateType, from: source) }) {
+            } else if let vc = navStacks.first(where: { $0.canHandle(updateType, from: source) }) {
                 return vc
-            } else if let vc = tabs?.first(where: { $0.canHandle(updateType, from: source) }) {
+            } else if let vc = tabs.first(where: { $0.canHandle(updateType, from: source) }) {
                 return vc
             } else {
                 return (parent ?? presentingViewController)?.unwindVc(for: updateType, from: source)
@@ -47,16 +47,16 @@ private extension UIViewController {
         }
     }
 
-    func firstChild<T>(_ t: T.Type) -> T? {
-        self as? T ?? children.first { $0.firstChild(t) != nil }?.firstChild(t)
+    func allChild<T>(_ t: T.Type) -> [T] {
+        [self as? T].compactMap { $0 } + children.flatMap { $0.allChild(t) }
     }
 
-    var navStack: [UIViewController]? {
-        firstChild(UINavigationController.self)?.viewControllers.reversed()
+    var navStacks: [UIViewController] {
+        allChild(UINavigationController.self).flatMap { $0.viewControllers.reversed() }
     }
 
-    var tabs: [UIViewController]? {
-        firstChild(UITabBarController.self)?.viewControllers
+    var tabs: [UIViewController] {
+        allChild(UITabBarController.self).flatMap { $0.viewControllers ?? [] }
     }
 
     func isVc(for updateType: Any.Type) -> Bool {
