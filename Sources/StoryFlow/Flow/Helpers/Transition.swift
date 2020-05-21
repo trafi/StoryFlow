@@ -2,11 +2,6 @@ import Foundation
 import UIKit
 
 public struct Transition<To: UIViewController> {
-    init(go: @escaping (UIViewController, To) -> ()) {
-        self.go = { from, to in
-            from.afterDismissingCompleted { go(from, to) }
-        }
-    }
     let go: (UIViewController, To) -> ()
 }
 
@@ -15,15 +10,31 @@ public struct Transition<To: UIViewController> {
 extension Transition {
 
     public static func custom(_: To.Type, transition: @escaping (UIViewController, To) -> ()) -> Transition {
-        return Transition(go: transition)
+        return Transition { from, to in
+            from.afterDismissingCompleted {
+                transition(from, to)
+            }
+        }
     }
 
     public static func show(_: To.Type) -> Transition {
-        return Transition { $0.show($1, sender: nil) }
+        return Transition { from, to in
+            if from.navigationController != nil {
+                from.show(to, sender: nil)
+            } else {
+                from.afterDismissingCompleted {
+                    from.show(to, sender: nil)
+                }
+            }
+        }
     }
 
     public static func present(_: To.Type, animated: Bool = true) -> Transition {
-        return Transition { $0.present($1, animated: animated) }
+        return Transition { from, to in
+            from.afterDismissingCompleted {
+                from.present(to, animated: animated)
+            }
+        }
     }
 }
 
@@ -64,7 +75,7 @@ private extension UIViewController {
     }
 
     func afterDismissingCompleted(_ transition: @escaping () -> ()) {
-        if navigationController == nil && presentedViewController?.isBeingDismissed == true {
+        if presentedViewController?.isBeingDismissed == true {
             dismiss(animated: true, completion: transition)
         } else {
             transition()
