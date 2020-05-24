@@ -76,7 +76,7 @@ private extension UIViewController {
 
     func afterDismissingCompleted(_ transition: @escaping () -> ()) {
         if presentedViewController?.isBeingDismissed == true {
-            dismiss(animated: true, completion: transition)
+            presentedViewController?.dismiss(animated: true, completion: transition)
         } else {
             transition()
         }
