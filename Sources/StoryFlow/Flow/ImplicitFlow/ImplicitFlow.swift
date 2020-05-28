@@ -58,7 +58,7 @@ extension Flow {
                 return
             }
 
-            fatalError("Didn't find `UpdateHandling` vc in the navigation sack and `InputRequiring` vc in the project for produced `output` \(value) from `\(Swift.type(of: from))`.")
+            fatalError("Didn't find `UpdateHandling` vc in the navigation stack and `InputRequiring` vc in the project for produced `output` \(value) from `\(Swift.type(of: from))`.")
         }
     }
 }
