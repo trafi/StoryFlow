@@ -71,7 +71,7 @@ extension Transition where To == UIViewController {
 private extension UIViewController {
 
     var parentInTabBarController: UIViewController? {
-        self.parent == self.tabBarController ? self : self.parent?.parentInTabBarController
+        return self.parent == self.tabBarController ? self : self.parent?.parentInTabBarController
     }
 
     func afterDismissingCompleted(_ transition: @escaping () -> ()) {

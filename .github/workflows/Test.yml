@@ -16,3 +16,14 @@ jobs:
           set -eo pipefail
           xcodebuild test -scheme StoryFlow -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty
       - uses: codecov/codecov-action@v1
+  test-iOS-12:
+    runs-on: macOS-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_10.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run StoryFlow tests on iOS 12
+        run: |
+          set -eo pipefail
+          xcodebuild test -scheme StoryFlow -destination "platform=iOS Simulator,OS=12.4,name=iPhone 8" | xcpretty
+

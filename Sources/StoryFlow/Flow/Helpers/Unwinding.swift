@@ -4,12 +4,12 @@ import UIKit
 extension UIViewController {
 
     func unwindVc(for updateType: Any.Type) -> UIViewController? {
-        unwindVc(for: updateType, from: self)
+        return unwindVc(for: updateType, from: self)
     }
 
     private func unwindVc(for updateType: Any.Type, from source: UIViewController) -> UIViewController? {
 
-        Thread.onMain {
+        return Thread.onMain {
             if canHandle(updateType, from: source) {
                 return self
             } else if let vc = navStacks.first(where: { $0.canHandle(updateType, from: source) }) {
@@ -48,15 +48,15 @@ private extension UIViewController {
     }
 
     func allChild<T>(_ t: T.Type) -> [T] {
-        [self as? T].compactMap { $0 } + children.flatMap { $0.allChild(t) }
+        return [self as? T].compactMap { $0 } + children.flatMap { $0.allChild(t) }
     }
 
     var navStacks: [UIViewController] {
-        allChild(UINavigationController.self).flatMap { $0.viewControllers.reversed() }
+        return allChild(UINavigationController.self).flatMap { $0.viewControllers.reversed() }
     }
 
     var tabs: [UIViewController] {
-        allChild(UITabBarController.self).flatMap { $0.viewControllers ?? [] }
+        return allChild(UITabBarController.self).flatMap { $0.viewControllers ?? [] }
     }
 
     func isVc(for updateType: Any.Type) -> Bool {
