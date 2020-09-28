@@ -83,7 +83,7 @@ private var inputRequiringTypes: [_AnyInputRequiring.Type] = {
         for i in 0 ..< actualClassCount {
             let c: AnyClass = allClasses[Int(i)]
             guard
-                class_getSuperclass(c) is UIViewController.Type,
+                c.superclass() is UIViewController.Type,
                 let t = c as? _AnyInputRequiring.Type
                 else { continue }
 
