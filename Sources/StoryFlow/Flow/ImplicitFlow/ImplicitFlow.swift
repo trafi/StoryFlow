@@ -82,8 +82,13 @@ private var inputRequiringTypes: [_AnyInputRequiring.Type] = {
     Thread.onMain {
         for i in 0 ..< actualClassCount {
             let c: AnyClass = allClasses[Int(i)]
+            let className = String(cString: class_getName(c))
+            if className.hasPrefix("Homescreen") {
+                print("Homescreen class: \(className)")
+            }
+
             guard
-                c.superclass() is UIViewController.Type,
+                class_getSuperclass(c) is UIViewController.Type,
                 let t = c as? _AnyInputRequiring.Type
                 else { continue }
 
