@@ -70,7 +70,7 @@ extension OutputProducing where Self: UIViewController {
     }
 }
 
-private var inputRequiringTypes: [_AnyInputRequiring.Type] {
+private var inputRequiringTypes: [_AnyInputRequiring.Type] = {
 
     let expectedClassCount = objc_getClassList(nil, 0)
     let allClasses = UnsafeMutablePointer<AnyClass>.allocate(capacity: Int(expectedClassCount))
@@ -99,4 +99,4 @@ private var inputRequiringTypes: [_AnyInputRequiring.Type] {
     allClasses.deallocate()
 
     return classes
-}
+}()
