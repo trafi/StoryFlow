@@ -1,5 +1,6 @@
 import XCTest
 import StoryFlow
+import SomeCoreUI
 
 class ImplicitFlowTests: XCTestCase {
     
@@ -849,4 +850,17 @@ class ImplicitFlowTests: XCTestCase {
         // Clean up
         OutputTransform.reset()
     }
+
+    // MARK: ObjC shit
+
+    func testProduce_findsObjCShit() {
+
+        class From: UIViewController, OutputProducing { typealias OutputType = SomeLink }
+
+        let from = From().visible()
+        from.produce(SomeLink())
+
+
+    }
 }
+
