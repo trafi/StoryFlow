@@ -17,6 +17,7 @@ var currentVc: UIViewController {
 
     func currentVc(from vc: UIViewController) -> UIViewController {
         return (vc as? UINavigationController)?.topViewController.flatMap(currentVc)
+            ?? (vc as? UITabBarController)?.selectedViewController.flatMap(currentVc)
             ?? vc.presentedViewController.flatMap(currentVc)
             ?? vc
     }
@@ -100,7 +101,7 @@ extension XCTestCase {
         DispatchQueue.global(qos: .userInitiated).async { _ = testCase() }
 
         // Assert
-        waitForExpectations(timeout: 0.1) { _ in
+        waitForExpectations(timeout: 1) { _ in
             // Clean up
             FatalErrorUtil.restoreFatalError()
         }

@@ -7,6 +7,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/trafi/StoryFlow/blob/master/LICENSE)
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![codecov](https://codecov.io/gh/trafi/StoryFlow/branch/master/graph/badge.svg)](https://codecov.io/gh/trafi/StoryFlow)
 
 Functional view controllers automatic flow coordination ✨<br>
 [⚡️ Lightning talk crash course from App Builders](https://youtu.be/mtBBlml759k)<br>

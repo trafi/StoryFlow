@@ -3,17 +3,11 @@ import UIKit
 
 extension Thread {
 
-    static func onMain(_ work: @escaping () -> ()) {
-
-        guard !Thread.isMainThread else { work(); return }
-
-        let thread = DispatchGroup()
-        thread.enter()
-
-        DispatchQueue.main.async {
-            work()
-            thread.leave()
+    static func onMain<T>(execute work: () throws -> T) rethrows -> T {
+        if Thread.isMainThread {
+            return try work()
+        } else {
+            return try DispatchQueue.main.sync(execute: work)
         }
-        thread.wait()
     }
 }

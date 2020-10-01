@@ -33,7 +33,6 @@
 		D3E0951320AC6AAD007E5715 /* Combinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E0951220AC6AAD007E5715 /* Combinations.swift */; };
 		D3E0951620AC6B68007E5715 /* BaseIntrefaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E0951520AC6B68007E5715 /* BaseIntrefaces.swift */; };
 		D3E0951820ACCC8E007E5715 /* ExplicitFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E0951720ACCC8E007E5715 /* ExplicitFlow.swift */; };
-		DD75FCA62452DB0B0008F5DE /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75FCA52452DB0B0008F5DE /* Package.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -422,7 +421,6 @@
 				D3E0951820ACCC8E007E5715 /* ExplicitFlow.swift in Sources */,
 				D374ECDC20B4BD3E00481F05 /* OneOf.swift in Sources */,
 				D39DC65221BA8D7000E43FA9 /* ImplicitFlow+CustomTransition.swift in Sources */,
-				DD75FCA62452DB0B0008F5DE /* Package.swift in Sources */,
 				D3C4779B20AE12E2004B8460 /* Testing.swift in Sources */,
 				D3E0951320AC6AAD007E5715 /* Combinations.swift in Sources */,
 				D374ECDF20B4C0CE00481F05 /* ExplicitFlow+OneOf.swift in Sources */,
