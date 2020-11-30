@@ -3,7 +3,7 @@ import UIKit
 
 func oneOf(_ types: Any.Type, contains type: Any.Type) -> Bool {
     guard let oneOfType = types as? OneOfNType.Type else { return types == type }
-    return oneOfType.valueTypes.contains { $0 == type }
+    return oneOfType.unwrappedValueTypes.contains { $0 == type }
 }
 
 // MARK: - Protocol
@@ -12,6 +12,23 @@ protocol OneOfNType {
     var valueAndType: ValueAndType { get }
     static var valueTypes: [Any.Type] { get }
     static func create(from value: Any) -> Any?
+}
+
+extension OneOfNType {
+    static var unwrappedValueTypes: [Any.Type] {
+        return valueTypes.flatMap { ($0 as? OneOfNType.Type)?.unwrappedValueTypes ?? [$0] }
+    }
+    static func wrappedCreate(from value: Any) -> Any? {
+        for valueType in valueTypes {
+            if valueType == type(of: value) {
+                return create(from: value)
+            } else if let oneOfType = valueType as? OneOfNType.Type,
+                      let nestedValue = oneOfType.wrappedCreate(from: value) {
+                return create(from: nestedValue)
+            }
+        }
+        return nil
+    }
 }
 
 // MARK: - Conformance
