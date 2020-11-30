@@ -18,7 +18,7 @@ extension InputRequiring where Self: UIViewController  {
     public static func _create(input: Any) -> UIViewController {
         if let typedInput = input as? InputType {
             return self.init(input: typedInput)
-        } else if let typedInput = (InputType.self as? OneOfNType.Type)?.create(from: input) as? InputType {
+        } else if let typedInput = (InputType.self as? OneOfNType.Type)?.wrappedCreate(from: input) as? InputType {
             return self.init(input: typedInput)
         } else {
             fatalError("Trying to create `\(self)` with uncompatible `input` value: \(input).")
@@ -58,7 +58,7 @@ extension UpdateHandling where Self: UIViewController {
     public func _handleAny(update: Any) {
         if let update = update as? UpdateType {
             handle(update: update)
-        } else if let update = (UpdateType.self as? OneOfNType.Type)?.create(from: update) as? UpdateType {
+        } else if let update = (UpdateType.self as? OneOfNType.Type)?.wrappedCreate(from: update) as? UpdateType {
             handle(update: update)
         } else {
             fatalError("Trying to update `\(self)` with uncompatible `update` value: \(update).")

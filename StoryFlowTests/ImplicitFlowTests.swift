@@ -220,6 +220,39 @@ class ImplicitFlowTests: XCTestCase {
         XCTAssert(to.update === output)
     }
 
+    func testProduce_itUnwindsToNestedOneOfUpdateType() {
+
+        // Arrange
+        class T1 {}
+        class T2 {}
+        class T3 {}
+
+        class From: UIViewController, OutputProducing { typealias OutputType = T2 }
+        class To: UIViewController, UpdateHandling {
+            func handle(update: OneOf2<T1, OneOf2<T3, OneOf2<T2, T3>>>) {
+                guard case .t2(.t2(.t1(let update))) = update else { return }
+                self.update = update
+            }
+            var update: T2!
+        }
+
+        let to = To().visible()
+        let from = From()
+
+        to.show(from, sender: nil)
+        XCTAssert(currentVc.didAppear())
+
+        let output = T2()
+
+        // Act
+        from.produce(output)
+        XCTAssert(currentVc.didDismiss())
+
+        // Assert
+        XCTAssert(currentVc == to)
+        XCTAssert(to.update === output)
+    }
+
     func testProduce_itUnwindsToOneOfUpdateHandlingVcAndPassesOutput() {
 
         // Arrange
