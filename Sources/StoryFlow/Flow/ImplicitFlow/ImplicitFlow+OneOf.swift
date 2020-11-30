@@ -16,7 +16,7 @@ protocol OneOfNType {
 
 extension OneOfNType {
     static var unwrappedValueTypes: [Any.Type] {
-        valueTypes.flatMap { ($0 as? OneOfNType.Type)?.unwrappedValueTypes ?? [$0] }
+        return valueTypes.flatMap { ($0 as? OneOfNType.Type)?.unwrappedValueTypes ?? [$0] }
     }
     static func wrappedCreate(from value: Any) -> Any? {
         for valueType in valueTypes {
