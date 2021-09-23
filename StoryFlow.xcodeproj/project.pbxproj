@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		538FE95C26FCE630002D2C74 /* OneOfUs in Frameworks */ = {isa = PBXBuildFile; productRef = 538FE95B26FCE630002D2C74 /* OneOfUs */; };
 		D323F60C20B530B200C3E8E5 /* ImplicitFlow+OneOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = D323F60B20B530B200C3E8E5 /* ImplicitFlow+OneOf.swift */; };
 		D353D047211C8C6D00EA5F07 /* StoryFlow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3E094EA20AC3284007E5715 /* StoryFlow.framework */; };
 		D358B3AD20B49007009A9C90 /* ImplicitFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D358B3AC20B49007009A9C90 /* ImplicitFlow.swift */; };
@@ -100,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				538FE95C26FCE630002D2C74 /* OneOfUs in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +321,9 @@
 			dependencies = (
 			);
 			name = StoryFlow;
+			packageProductDependencies = (
+				538FE95B26FCE630002D2C74 /* OneOfUs */,
+			);
 			productName = StoryFlow;
 			productReference = D3E094EA20AC3284007E5715 /* StoryFlow.framework */;
 			productType = "com.apple.product-type.framework";
@@ -357,6 +362,9 @@
 				Base,
 			);
 			mainGroup = D3E094E020AC3284007E5715;
+			packageReferences = (
+				538FE95A26FCE630002D2C74 /* XCRemoteSwiftPackageReference "OneOfUs" */,
+			);
 			productRefGroup = D3E094EB20AC3284007E5715 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -863,6 +871,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		538FE95A26FCE630002D2C74 /* XCRemoteSwiftPackageReference "OneOfUs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:trafi/OneOfUs.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		538FE95B26FCE630002D2C74 /* OneOfUs */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 538FE95A26FCE630002D2C74 /* XCRemoteSwiftPackageReference "OneOfUs" */;
+			productName = OneOfUs;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D3E094E120AC3284007E5715 /* Project object */;
 }
