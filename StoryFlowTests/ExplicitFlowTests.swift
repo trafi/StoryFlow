@@ -1,5 +1,6 @@
 import XCTest
 import StoryFlow
+import OneOfUs
 
 class ExplicitFlowTests: XCTestCase {
 

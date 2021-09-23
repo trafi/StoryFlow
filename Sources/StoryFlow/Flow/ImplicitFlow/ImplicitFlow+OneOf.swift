@@ -1,6 +1,8 @@
 import Foundation
 import UIKit
 
+import OneOfUs
+
 func oneOf(_ types: Any.Type, contains type: Any.Type) -> Bool {
     guard let oneOfType = types as? OneOfNType.Type else { return types == type }
     return oneOfType.unwrappedValueTypes.contains { $0 == type }
