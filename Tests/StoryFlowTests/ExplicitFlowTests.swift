@@ -1,5 +1,5 @@
 import XCTest
-import StoryFlow
+@testable import StoryFlow
 
 class ExplicitFlowTests: XCTestCase {
 
@@ -216,13 +216,13 @@ class ExplicitFlowTests: XCTestCase {
         start.produce("")
         XCTAssert(currentVc.didAppear())
 
-        (currentVc as! InStringOutIntDoubleFloat).produce(0 as Double)
+        (currentVc as? InStringOutIntDoubleFloat)?.produce(0 as Double)
         XCTAssert(currentVc.didAppear())
 
-        (currentVc as! InDoubleOutFloat).produce(0)
+        (currentVc as? InDoubleOutFloat)?.produce(0)
         XCTAssert(currentVc.didAppear())
 
-        (currentVc as! InFloatOutFloat).produce(3.14)
+        (currentVc as? InFloatOutFloat)?.produce(3.14)
         XCTAssert(currentVc.didDismiss())
 
         // Assert
