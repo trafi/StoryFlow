@@ -18,10 +18,10 @@ extension Flow {
         let (value, type) = OutputTransform.apply(output)
 
         let candidates = inputRequiringTypes.filter { oneOf($0._inputType, contains: type) }
-        let supers = candidates.map { class_getSuperclass($0 as! AnyClass) }
+        let supers = candidates.compactMap { class_getSuperclass($0 as? AnyClass) }
 
         let remainingCandidates = candidates.filter { c in
-            let isSuper = supers.contains { s in s == (c as! AnyClass) }
+            let isSuper = supers.contains { s in s == (c as? AnyClass) }
             return !isSuper
         }
 
