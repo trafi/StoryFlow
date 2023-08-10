@@ -16,8 +16,16 @@ extension Flow {
     
     private static func destination(for output: ValueAndType) -> UIViewController? {
         let (value, type) = OutputTransform.apply(output)
-        
-        for inType in inputRequiringTypes where oneOf(inType._inputType, contains: type) {
+
+        let candidates = inputRequiringTypes.filter { oneOf($0._inputType, contains: type) }
+        let supers = candidates.compactMap { class_getSuperclass($0 as? AnyClass) }
+
+        let remainingCandidates = candidates.filter { c in
+            let isSuper = supers.contains { s in s == (c as? AnyClass) }
+            return !isSuper
+        }
+
+        for inType in remainingCandidates {
             return inType._create(input: value)
         }
         
