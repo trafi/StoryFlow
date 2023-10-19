@@ -28,6 +28,10 @@ extension OutputProducing where Self: UIViewController {
             implicitFlow.proceed(with: output, from: self)
         }
     }
+    
+    public func produceDirect<T>(_ output: T) {
+        Flow<T>.implicit().proceed(with: output, from: self)
+    }
 
     /**
      Explicit transition graph from view controller.

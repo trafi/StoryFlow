@@ -65,6 +65,16 @@ extension Flow {
                 }
                 return
             }
+            
+            // MARK: Direct
+            
+            if let to = Flow<Any>.destination(for: (value, Swift.type(of: value))) {
+                let transition = TransitionInfo(from: from, producedType: Swift.type(of: value), receivedType: type, to: to, isUnwind: false)
+                if CustomTransition.attempt(transition) == false {
+                    Transition.show(UIViewController.self).go(from, to)
+                }
+                return
+            }
 
             fatalError("Didn't find `UpdateHandling` vc in the navigation stack and `InputRequiring` vc in the project for produced `output` \(value) from `\(Swift.type(of: from))`.")
         }
