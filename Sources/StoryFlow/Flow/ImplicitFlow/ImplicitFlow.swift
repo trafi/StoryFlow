@@ -67,10 +67,11 @@ extension Flow {
             }
             
             // MARK: Direct Unwind
+            let directProduceType = Swift.type(of: value)
             
-            if let to = from.unwindVc(for: Swift.type(of: value)) {
-                to.handleUpdate(value, type)
-                let transition = TransitionInfo(from: from, producedType: output.type, receivedType: type, to: to, isUnwind: true)
+            if let to = from.unwindVc(for: directProduceType) {
+                to.handleUpdate(value, directProduceType)
+                let transition = TransitionInfo(from: from, producedType: directProduceType, receivedType: directProduceType, to: to, isUnwind: true)
                 if CustomTransition.attempt(transition) == false {
                     Transition.unwind().go(from, to)
                 }
@@ -79,8 +80,8 @@ extension Flow {
             
             // MARK: Direct Input
             
-            if let to = Flow<Any>.destination(for: (value, Swift.type(of: value))) {
-                let transition = TransitionInfo(from: from, producedType: Swift.type(of: value), receivedType: type, to: to, isUnwind: false)
+            if let to = Flow<Any>.destination(for: (value, directProduceType)) {
+                let transition = TransitionInfo(from: from, producedType: directProduceType, receivedType: directProduceType, to: to, isUnwind: false)
                 if CustomTransition.attempt(transition) == false {
                     Transition.show(UIViewController.self).go(from, to)
                 }
