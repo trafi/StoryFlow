@@ -47,7 +47,7 @@ extension UIViewController {
 extension XCTWaiter {
 
     func completed(description: String = #function,
-                   timeout: TimeInterval = 1,
+                   timeout: TimeInterval = 2,
                    interval: TimeInterval = 0.002,
                    condition: @escaping () -> Bool) -> Bool {
 

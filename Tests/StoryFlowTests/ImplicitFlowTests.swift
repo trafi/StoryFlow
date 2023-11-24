@@ -414,6 +414,7 @@ class ImplicitFlowTests: XCTestCase {
 
         // Act
         from.produce(output)
+
         XCTAssert(currentVc.didAppear())
 
         // Assert

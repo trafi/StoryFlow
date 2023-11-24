@@ -1,5 +1,5 @@
 import XCTest
-import StoryFlow
+@testable import StoryFlow
 
 class TestabilityTests: XCTestCase {
 
