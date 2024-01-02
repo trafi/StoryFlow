@@ -19,10 +19,17 @@ extension OutputProducing where Self: UIViewController {
      - Parameter output: The value being passed to next view controller.
      */
     public func produce(_ output: OutputType) {
-
-        if let produce = produceStub {
-            produce(output)
-        } else if let flow = flow {
+        if let produceStub {
+            if let customOutput = produceStub(output) {
+                _produce(customOutput)
+            }
+        } else {
+            _produce(output)
+        }
+    }
+    
+    private func _produce(_ output: OutputType) {
+        if let flow = flow {
             flow.proceed(with: output, from: self)
         } else {
             implicitFlow.proceed(with: output, from: self)
