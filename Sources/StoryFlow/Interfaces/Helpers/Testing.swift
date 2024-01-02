@@ -11,22 +11,27 @@ extension InputRequiring where Self: UIViewController {
 
 extension OutputProducing where Self: UIViewController {
 
+    /// - Parameters:
+    ///   - produceStub: Closure that optionally overrides default produce behavior.
+    ///   When nil is returned default produce behaviour will not be triggered.
     public init(
         nibName: String? = nil,
         bundle: Bundle? = nil,
-        produce: @escaping (OutputType) -> OutputType?
+        produceStub: @escaping (OutputType) -> OutputType?
     ) {
         self.init(nibName: nibName, bundle: bundle)
-        produceStub = produce
+        self.produceStub = produceStub
     }
     
+    /// - Parameters:
+    ///   - produceStub: Closure that overrides default produce behavior.
     public init(
         nibName: String? = nil,
         bundle: Bundle? = nil,
-        produce: @escaping (OutputType) -> ()
+        produceStub: @escaping (OutputType) -> ()
     ) {
         self.init(nibName: nibName, bundle: bundle) {
-            produce($0)
+            produceStub($0)
             return nil
         }
     }
@@ -40,25 +45,30 @@ private var produceStubKey = 0
 
 extension InputRequiring where Self: UIViewController & OutputProducing {
 
+    /// - Parameters:
+    ///   - produceStub: Closure that optionally overrides default produce behavior.
+    ///   When nil is returned default produce behaviour will not be triggered.
     public init(
         nibName: String? = nil,
         bundle: Bundle? = nil,
         input: InputType,
-        produce: @escaping (OutputType) -> OutputType?
+        produceStub: @escaping (OutputType) -> OutputType?
     ) {
         self.init(nibName: nibName, bundle: bundle)
         self.input = input
-        self.produceStub = produce
+        self.produceStub = produceStub
     }
     
+    /// - Parameters:
+    ///   - produceStub: Closure that overrides default produce behavior.
     public init(
         nibName: String? = nil,
         bundle: Bundle? = nil,
         input: InputType,
-        produce: @escaping (OutputType) -> ()
+        produceStub: @escaping (OutputType) -> ()
     ) {
         self.init(nibName: nibName, bundle: bundle) {
-            produce($0)
+            produceStub($0)
             return nil
         }
     }
