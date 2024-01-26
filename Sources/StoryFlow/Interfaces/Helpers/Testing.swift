@@ -71,6 +71,7 @@ extension InputRequiring where Self: UIViewController & OutputProducing {
             produceStub($0)
             return nil
         }
+        self.input = input
     }
     
 }
