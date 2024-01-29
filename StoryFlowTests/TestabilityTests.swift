@@ -25,7 +25,7 @@ class TestabilityTests: XCTestCase {
         class Vc: UIViewController, OutputProducing { typealias OutputType = T }
 
         var producedOutput: T!
-        let vc = Vc(produce: { producedOutput = $0 })
+        let vc = Vc(produceStub: { producedOutput = $0 })
 
         let output = T()
 
@@ -48,7 +48,7 @@ class TestabilityTests: XCTestCase {
         var producedOutput: T!
 
         // Act
-        let vc = Vc(input: value, produce: { producedOutput = $0 })
+        let vc = Vc(input: value, produceStub: { producedOutput = $0 })
         vc.produce(value)
 
         // Assert
