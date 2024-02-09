@@ -56,3 +56,12 @@ extension OutputProducing where Self: UIViewController {
 }
 
 private var flowKey = 0
+
+
+public extension UIViewController {
+    
+    func produceDirect<T>(_ output: T) {
+        Flow<T>.implicit().proceed(with: output, from: self)
+    }
+    
+}
