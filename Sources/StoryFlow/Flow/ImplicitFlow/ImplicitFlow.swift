@@ -36,12 +36,15 @@ extension Flow {
 
 extension Flow {
 
+    private class _VoidOutputTypeProducing: UIViewController, OutputProducing {
+        typealias OutputType = Void
+    }
+    
     public static func implicit() -> Flow {
         return Flow { from, value in
 
-            guard let outputProducing = from as? _AnyOutputProducing
-                else { fatalError("Can't use `Flow.implict()` on vc that is not `OutputProducing` for produced `output` \(value) from `\(Swift.type(of: from))`.") }
-
+            let outputProducing = from as? _AnyOutputProducing ?? _VoidOutputTypeProducing()
+            
             let output = OutputTransform.unwrapOneOfN((value, Swift.type(of: outputProducing)._outputType))
             let (value, type) = OutputTransform.apply(output)
 
