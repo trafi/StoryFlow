@@ -29,6 +29,33 @@ public indirect enum OneOf8<T1, T2, T3, T4, T5, T6, T7, T8> {
     case t1(T1), t2(T2), t3(T3), t4(T4), t5(T5), t6(T6), t7(T7), t8(T8)
 }
 
+// MARK: - Sendable
+
+extension OneOf2: Sendable
+where T1: Sendable, T2: Sendable {}
+
+extension OneOf3: Sendable
+where T1: Sendable, T2: Sendable, T3: Sendable {}
+
+extension OneOf4: Sendable
+where T1: Sendable, T2: Sendable, T3: Sendable, T4: Sendable {}
+
+extension OneOf5: Sendable
+where T1: Sendable, T2: Sendable, T3: Sendable, T4: Sendable,
+      T5: Sendable {}
+
+extension OneOf6: Sendable
+where T1: Sendable, T2: Sendable, T3: Sendable, T4: Sendable,
+      T5: Sendable, T6: Sendable {}
+
+extension OneOf7: Sendable
+where T1: Sendable, T2: Sendable, T3: Sendable, T4: Sendable,
+      T5: Sendable, T6: Sendable, T7: Sendable {}
+
+extension OneOf8: Sendable
+where T1: Sendable, T2: Sendable, T3: Sendable, T4: Sendable,
+      T5: Sendable, T6: Sendable, T7: Sendable, T8: Sendable {}
+
 // MARK: - Equatable
 
 extension OneOf2: Equatable
